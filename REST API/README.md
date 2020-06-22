@@ -12,6 +12,9 @@
 	* ping : returns statusCode 200
 	* notFound : return statusCode 404; a redirect for any invalid route
 	* users : has CRUD operations facility to work with "users" directory inside ".data" folder
+	* tokens : has CRUD operations facility to work with "tokens" directory inside ".data" folder
+		- a unique token is generated for a user
+		- there can be multiple tokens for a single user
 
 ### CRUD operations are configured in /lib/data.js
 * each operation works with files inside the ".data" folder
