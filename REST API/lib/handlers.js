@@ -96,6 +96,9 @@ handlers._users.post = function (data, callback) {
 /**
  * http GET method to read data of an already present user
  * 
+ * 
+ * A user is validated with a token, that was generated to that user, before reading
+ * 
  * Required data: phone | passed as a queryString parameter with '/users' route
  * @example /users?phone=1234567890
  * 
@@ -104,22 +107,31 @@ handlers._users.post = function (data, callback) {
  * @param {*} data : object from the http request that includes required details to read a user
  * @param {*} callback : return respective statusCode (and error) based on the operation
  * 
- * @TODO Only let an authenticated user access their object
- * don't let anyone else access their object
  */
 handlers._users.get = function (data, callback) {
 	// Check that the phone number is valid
 	var phone = (typeof(data.queryStringObject.phone) == 'string' && data.queryStringObject.phone.trim().length == 10) ? data.queryStringObject.phone : false;
 	if(phone) {
-		_data.read('users', phone, function (err, data) {
-			if(!err && data) {
-				// Remove the hashed password from the object before sending data
-				// we don't want to expose the password
-				delete data.hashedPassword;
-				callback(200, data);
+		// get the token from the headers
+		const token = typeof(data.headers.token) == 'string' ? data.headers.token : false;
+		// verify that the given token is valid for the phone number
+		handlers._tokens.verifyToken(token, phone, function (tokenIsValid) {
+			if(tokenIsValid) {
+				// lookup the user
+				_data.read('users', phone, function (err, data) {
+					if(!err && data) {
+						// Remove the hashed password from the object before sending data
+						// we don't want to expose the password
+						delete data.hashedPassword;
+						callback(200, data);
+					}
+					else {
+						callback(404, {'Error': 'Unable to read data'});
+					}
+				});
 			}
 			else {
-				callback(404, {'Error': 'Unable to read data'});
+				callback(403, {'Error': 'Missing required token in header or token is invalid'});
 			}
 		});
 	}
@@ -132,6 +144,8 @@ handlers._users.get = function (data, callback) {
 /**
  * http PUT method to update data of an already present user
  * 
+ * A user is validated with a token, that was generated to that user, before updating
+ * 
  * Required data: phone | passed as a queryString parameter with '/users' route
  * @example /users?phone=1234567890
  *  
@@ -140,8 +154,6 @@ handlers._users.get = function (data, callback) {
  * @param {*} data : object from the http request that includes required details to read a user and update
  * @param {*} callback : return respective statusCode (and error) based on the operation
  * 
- * @TODO Only let an authenticated user access their object
- * don't let anyone else access their object
  */
 handlers._users.put = function (data, callback) {
 	// check for the required field
@@ -156,32 +168,41 @@ handlers._users.put = function (data, callback) {
 	if(phone) {
 		// error if nothing is sent for updating
 		if(firstName || lastName || password){
-			_data.read('users', phone, function (err, userData) {
-				if(!err && userData) {
-					// modify the userData fields to update
-					if(firstName) {
-						userData.firstName = firstName;
-					}
-					if(lastName) {
-						userData.lastName = lastName;
-					}
-					if(password) {
-						userData.hashedPassword = helpers.hash(password);
-					}
-					// store the updates
-					_data.update('users', phone, userData, function (err) {
-						if(!err){
-							callback(200);
+			// get the token from the headers
+			const token = typeof(data.headers.token) == 'string' ? data.headers.token : false;
+			handlers._tokens.verifyToken(token, phone, function (tokenIsValid) {
+				if(tokenIsValid){
+					_data.read('users', phone, function (err, userData) {
+						if(!err && userData) {
+							// modify the userData fields to update
+							if(firstName) {
+								userData.firstName = firstName;
+							}
+							if(lastName) {
+								userData.lastName = lastName;
+							}
+							if(password) {
+								userData.hashedPassword = helpers.hash(password);
+							}
+							// store the updates
+							_data.update('users', phone, userData, function (err) {
+								if(!err){
+									callback(200);
+								}
+								else {
+									console.log(err);
+									callback(500, {'Error': 'Could not update the user'});
+								}
+							});
 						}
 						else {
-							console.log(err);
-							callback(500, {'Error': 'Could not update the user'});
-						}
+							callback(400, {'Error': 'Specified user does not exist'})
+						} 
 					});
 				}
 				else {
-					callback(400, {'Error': 'Specified user does not exist'})
-				} 
+					callback(403, {'Error': 'Missing required token in header or token is invalid'});
+				}
 			});
 		}
 		else {
@@ -197,14 +218,13 @@ handlers._users.put = function (data, callback) {
 /**
  * http DELETE method to remove an already present user
  * 
+ * A user is validated with a token, that was generated to that user, before deleting
+ * 
  * Required data: phone | passed as a queryString parameter with '/users' route
  * @example /users?phone=1234567890
  * 
  * @param {*} data : object from the http request that includes required details to read a user and delete
  * @param {*} callback : return respective statusCode (and error) based on the operation
- * 
- * @TODO Only let an authenticated user access their object
- * don't let anyone else access their object
  * 
  * @TODO clean up or delete any other data files associated to the user
  * 
@@ -213,19 +233,28 @@ handlers._users.delete = function (data, callback) {
 	// Check that the phone number is valid
 	var phone = (typeof(data.queryStringObject.phone) == 'string' && data.queryStringObject.phone.trim().length == 10) ? data.queryStringObject.phone : false;
 	if(phone) {
-		_data.read('users', phone, function (err, data) {
-			if(!err && data) {
-				_data.delete('users', phone, function (err) {
-					if(!err) {
-						callback(200);
+		// get the token from the headers
+		const token = typeof(data.headers.token) == 'string' ? data.headers.token : false;
+		handlers._tokens.verifyToken(token, phone, function (tokenIsValid) {
+			if(tokenIsValid){
+				_data.read('users', phone, function (err, data) {
+					if(!err && data) {
+						_data.delete('users', phone, function (err) {
+							if(!err) {
+								callback(200);
+							}
+							else {
+								callback(500, {'Error': 'Could not delete specified user'});
+							}
+						});
 					}
 					else {
-						callback(500, {'Error': 'Could not delete specified user'});
+						callback(404, {'Error': 'Could not find the specified user'});
 					}
 				});
 			}
 			else {
-				callback(404, {'Error': 'Could not find the specified user'});
+				callback(403, {'Error': 'Missing required token in header or token is invalid'});
 			}
 		});
 	}
@@ -434,6 +463,31 @@ handlers._tokens.delete = function (data, callback) {
 	else {
 		callback(400, {'Error': 'Missing required field(id)'});
 	}
+};
+
+/**
+ * Verify if a given token-id is currently valid for a given user
+ * 
+ * @param {*} id : token id to be validated with phone
+ * @param {*} phone : phone number to be validated for a user
+ * @param {*} callback : returns boolean result of validation
+ */
+handlers._tokens.verifyToken = function (id, phone, callback) {
+	// look up the token
+	_data.read('tokens', id, function (err, tokenData) {
+		if(!err && tokenData) {
+			// check whether the token is for the given user, and has not expired
+			if(tokenData.phone == phone && tokenData.expires > Date.now()) {
+				callback(true);
+			}
+			else {
+				callback(false);
+			}
+		}
+		else {
+			callback(false);
+		}	
+	});
 };
 
 // notFound handler
