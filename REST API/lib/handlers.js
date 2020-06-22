@@ -79,13 +79,88 @@ handlers._users.post = function (data, callback) {
 };
 
 // Users - get
+// Required data: phone
+// Optional data: none
+/**
+ * @TODO Only let an authenticated user access their object
+ * don't let anyone else access their object
+ */
 handlers._users.get = function (data, callback) {
-	
+	// Check that the phone number is valid
+	var phone = (typeof(data.queryStringObject.phone) == 'string' && data.queryStringObject.phone.trim().length == 10) ? data.queryStringObject.phone : false;
+	if(phone) {
+		_data.read('users', phone, function (err, data) {
+			if(!err && data) {
+				// Remove the hashed password from the object before sending data
+				// we don't want to expose the password
+				delete data.hashedPassword;
+				callback(200, data);
+			}
+			else {
+				callback(404, {'Error': 'Unable to read data'});
+			}
+		});
+	}
+	else {
+		callback(400, {'Error': 'Missing required field(phone)'});
+	}
 };
 
 // Users - put
+// Required data: phone
+// Optional data: fname, lname, password (at least one must be specified)
+/**
+ * @TODO Only let an authenticated user access their object
+ * don't let anyone else access their object
+ */
 handlers._users.put = function (data, callback) {
-	
+	// check for the required field
+	const phone = (typeof(data.queryStringObject.phone) == 'string' && data.queryStringObject.phone.trim().length == 10) ? data.queryStringObject.phone : false;
+
+	// check for the optional field
+	const firstName = (typeof(data.payload.firstName) == 'string' && data.payload.firstName.trim().length > 0) ? data.payload.firstName.trim() : false;
+	const lastName = (typeof(data.payload.lastName) == 'string' && data.payload.lastName.trim().length > 0) ? data.payload.lastName.trim() : false;
+	const password = (typeof(data.payload.password) == 'string' && data.payload.password.trim().length > 0) ? data.payload.password.trim() : false;
+
+	// error if phone is invalid
+	if(phone) {
+		// error if nothing is sent for updating
+		if(firstName || lastName || password){
+			_data.read('users', phone, function (err, userData) {
+				if(!err && userData) {
+					// modify the userData fields to update
+					if(firstName) {
+						userData.firstName = firstName;
+					}
+					if(lastName) {
+						userData.lastName = lastName;
+					}
+					if(password) {
+						userData.hashedPassword = helpers.hash(password);
+					}
+					// store the updates
+					_data.update('users', phone, userData, function (err) {
+						if(!err){
+							callback(200);
+						}
+						else {
+							console.log(err);
+							callback(500, {'Error': 'Could not update the user'});
+						}
+					});
+				}
+				else {
+					callback(400, {'Error': 'Specified user does not exist'})
+				} 
+			});
+		}
+		else {
+			callback(400, {'Error': 'Missing fields to update'});
+		}
+	}
+	else {
+		callback(400, {'Error': 'Missing required field(phone)'});
+	}
 };
 
 // Users - delete
