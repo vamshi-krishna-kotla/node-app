@@ -6,6 +6,7 @@
 // Dependencies
 const fs = require('fs');
 const path = require('path');
+const helpers = require('./helpers');
 
 // Container for this module (to be exported)
 var lib = {};
@@ -59,12 +60,18 @@ lib.create = function (dir, file, data, callback) {
  * 
  * @param {*} dir : directory inside the .data folder to be accessed
  * @param {*} file : file inside the given directory, whose contents are to be read
- * @param {*} callback : returns data read from the file and error:false else returns an error and data:undefined
+ * @param {*} callback : returns data read from the file, after parsing the data, and error:false else returns an error and data:undefined
  */
 lib.read = function (dir, file, callback) {
 	fs.readFile(lib.baseDir + dir + '/' + file + '.json', 'utf8', function(err, data){
 		// return 'err' and 'data' in same order and read in same order
-		callback(err,data);
+		if(!err && data) {
+			var parsedData = helpers.parseJsonToObject(data);
+			callback(false, parsedData);
+		}
+		else {
+			callback(err,data);
+		}
 	});
 };
 
