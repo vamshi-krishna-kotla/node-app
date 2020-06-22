@@ -13,7 +13,14 @@ var lib = {};
 // base directory of the data folder
 lib.baseDir = path.join(__dirname, '/../.data/');
 
-// Write data to a file
+/**
+ * Write data to a file
+ * 
+ * @param {*} dir : directory inside the .data folder to be accessed
+ * @param {*} file : file inside the given directory to be created new
+ * @param {*} data : JSON data to be written to the file
+ * @param {*} callback : returns any error if operation failed else returns false
+ */
 lib.create = function (dir, file, data, callback) {
 	// Open the file for writing
 
@@ -47,7 +54,13 @@ lib.create = function (dir, file, data, callback) {
 	}); 
 };
 
-// Read data from a file
+/**
+ * Read data from a file
+ * 
+ * @param {*} dir : directory inside the .data folder to be accessed
+ * @param {*} file : file inside the given directory, whose contents are to be read
+ * @param {*} callback : returns data read from the file and error:false else returns an error and data:undefined
+ */
 lib.read = function (dir, file, callback) {
 	fs.readFile(lib.baseDir + dir + '/' + file + '.json', 'utf8', function(err, data){
 		// return 'err' and 'data' in same order and read in same order
@@ -55,7 +68,15 @@ lib.read = function (dir, file, callback) {
 	});
 };
 
-// Update the data inside an exisiting file
+/**
+ * Update the data inside an exisiting file
+ * Truncates any current data present currently in a file and writes new data
+ * 
+ * @param {*} dir : directory inside the .data folder to be accessed
+ * @param {*} file : file inside the given directory to be accessed; needs to be already present
+ * @param {*} data : JSON data to be written to the file
+ * @param {*} callback : returns any error if operation failed else returns false
+ */
 lib.update = function (dir, file, data, callback) {
 	// the "r+" switch is used to work with an already existing file
 	// gives an error if the file doesn't exist at all
@@ -95,7 +116,13 @@ lib.update = function (dir, file, data, callback) {
 	});
 };
 
-// Delete a file
+/**
+ * Delete a file
+ * 
+ * @param {*} dir : directory inside the .data folder to be accessed
+ * @param {*} file : file inside the given directory, that has to be deleted
+ * @param {*} callback : returns err:false if file is deleted successfully else returns a string
+ */
 lib.delete = function (dir, file, callback) {
 	fs.unlink(lib.baseDir + dir + '/' + file + '.json', function (err) {
 		if(!err) {

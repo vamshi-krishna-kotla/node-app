@@ -82,7 +82,7 @@ server.listen(config.port, function () {
 // define the handlers
 var handlers = {
 	"notfound": function (data, callback) {
-		callback(404)
+		callback(404);
 	}
 };
 // PING handler
