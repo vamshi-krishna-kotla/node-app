@@ -18,3 +18,13 @@
 
 ### CRUD operations are configured in /lib/data.js
 * each operation works with files inside the ".data" folder
+
+# Working flow of the API
+* create a directory `.data/users`
+* add few users with required details [using POST request to `/users` route]
+* create a directory `.data/tokens`
+* add few tokens with required details [using POST request to `/tokens` route]
+## 
+* details of a user can be `READ`/`UPDATED`/`DELETED` only if a valid token is present for that user
+* each token has an expiration time of 1 hour which is validated(authentication) before `read(GET)`/`update(PUT)`/`remove(DELETE)` requests for that user
+* #### the token has to be passed as a request header to be read by the handler, to proceed with the authentication
