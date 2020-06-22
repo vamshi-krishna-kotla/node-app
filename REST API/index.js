@@ -7,7 +7,9 @@
 const http = require('http');
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
-var config = require('./config');
+var config = require('./lib/config');
+var handlers = require('./lib/handlers');
+const helpers = require('./lib/helpers');
 
 // server should respond to all requests with a string
 var server = http.createServer(function (req, res) {
@@ -40,8 +42,8 @@ var server = http.createServer(function (req, res) {
 		buffer += decoder.end();
 
 		// choose the handler this request should go to
-		// if one is not found then use the notfound handler
-		var chosenHandler = typeof(router[trimmedPath]) !== "undefined" ? router[trimmedPath] : handlers.notfound;
+		// if one is not found then use the notFound handler
+		var chosenHandler = typeof(router[trimmedPath]) !== "undefined" ? router[trimmedPath] : handlers.notFound;
 
 		// construct the data object to send to the handler
 		var data = {
@@ -49,7 +51,7 @@ var server = http.createServer(function (req, res) {
 			'queryStringObject': queryStringObject,
 			'method': method,
 			'headers': headers,
-			'payload': buffer
+			'payload': helpers.parseJsonToObject(buffer)
 		};
 
 		// route the request to the handler specified in the router
@@ -79,17 +81,9 @@ server.listen(config.port, function () {
 	console.log("Server is listening on PORT "+config.port+" in "+config.envName+" mode");
 })
 
-// define the handlers
-var handlers = {
-	"notfound": function (data, callback) {
-		callback(404);
-	}
-};
-// PING handler
-handlers.ping = function(data, callback) {
-	callback(200);
-};
+
 // define a request router
 var router = {
-	"ping": handlers.ping
+	"ping": handlers.ping,
+	"users": handlers.users
 };

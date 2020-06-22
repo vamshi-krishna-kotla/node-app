@@ -9,12 +9,14 @@ var environments = {
 	// staging (default) environment
 	"staging": {
 		'port': 3000,
-		'envName': 'staging'
+		'envName': 'staging',
+		'hashingSecret': 'thisIsASecret'
 	},
 	// production environment
 	"production": {
 		'port': 5000,
-		'envName': 'production'
+		'envName': 'production',
+		'hashingSecret': 'thisIsAlsoASecret'
 	}
 };
 
