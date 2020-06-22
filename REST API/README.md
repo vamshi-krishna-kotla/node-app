@@ -8,9 +8,10 @@
 * any other NODE_ENV value will be defaulted to PORT 3000 (staging currently)
 
 #### handlers are coded in an object to handle different routes
-- current handlers:
+- current handlers/routes:
 	* ping : returns statusCode 200
-	* notFound : return statusCode 404
+	* notFound : return statusCode 404; a redirect for any invalid route
+	* users : has CRUD operations facility to work with "users" directory inside ".data" folder
 
 ### CRUD operations are configured in /lib/data.js
 * each operation works with files inside the ".data" folder
