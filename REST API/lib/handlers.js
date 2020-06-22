@@ -164,8 +164,35 @@ handlers._users.put = function (data, callback) {
 };
 
 // Users - delete
+// Required data: phone
+/**
+ * @TODO Only let an authenticated user access their object
+ * don't let anyone else access their object
+ * @TODO clean up or delete any other data files associated to the user
+ */
 handlers._users.delete = function (data, callback) {
-	
+	// Check that the phone number is valid
+	var phone = (typeof(data.queryStringObject.phone) == 'string' && data.queryStringObject.phone.trim().length == 10) ? data.queryStringObject.phone : false;
+	if(phone) {
+		_data.read('users', phone, function (err, data) {
+			if(!err && data) {
+				_data.delete('users', phone, function (err) {
+					if(!err) {
+						callback(200);
+					}
+					else {
+						callback(500, {'Error': 'Could not delete specified user'});
+					}
+				});
+			}
+			else {
+				callback(404, {'Error': 'Could not find the specified user'});
+			}
+		});
+	}
+	else {
+		callback(400, {'Error': 'Missing required field(phone)'});
+	}
 };
 
 // notFound handler
