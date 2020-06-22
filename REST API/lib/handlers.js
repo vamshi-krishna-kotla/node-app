@@ -6,10 +6,16 @@
 const _data = require('./data');
 const helpers = require('./helpers');
 
-// define the handlers
+// define the handlers for each route (valid route)
 var handlers = {};
 
-// Users
+// <host>/users route
+/**
+ * This function filters the handler based on the HTTP method
+ * - uses the 'data.method' param for filtering
+ * @param {*} data : the object coming from the calling function; has the details of the HTTP request basically
+ * @param {*} callback : returns 405 if an invalid method is given
+ */
 handlers.users = function (data, callback) {
 	const acceptableMethods = ["post", "get", "put", "delete"];
 	if(acceptableMethods.indexOf(data.method) > -1) {
@@ -23,9 +29,17 @@ handlers.users = function (data, callback) {
 // Container for users submethods
 handlers._users = {};
 
-// Users - post
-// Required data: fname, lname, phone, password, tosAgreement
-// Optional data: none
+// <host>/users - post
+/**
+ * http POST method to include new user
+ * 
+ * Required data: firstName, lastName, phone, password, tosAgreement | passed as payload to '/users' route
+ * 
+ * Optional data: none
+ * 
+ * @param {*} data : object from the http request that includes required details to add new user
+ * @param {*} callback : return respective statusCode (and error) based on the operation
+ */
 handlers._users.post = function (data, callback) {
 	// Check that all required fiels are filled out
 	var firstName = (typeof(data.payload.firstName) == 'string' && data.payload.firstName.trim().length > 0) ? data.payload.firstName.trim() : false;
@@ -78,10 +92,18 @@ handlers._users.post = function (data, callback) {
 	}
 };
 
-// Users - get
-// Required data: phone
-// Optional data: none
+// <host>/users - get
 /**
+ * http GET method to read data of an already present user
+ * 
+ * Required data: phone | passed as a queryString parameter with '/users' route
+ * @example /users?phone=1234567890
+ * 
+ * Optional data: none
+ * 
+ * @param {*} data : object from the http request that includes required details to read a user
+ * @param {*} callback : return respective statusCode (and error) based on the operation
+ * 
  * @TODO Only let an authenticated user access their object
  * don't let anyone else access their object
  */
@@ -106,10 +128,18 @@ handlers._users.get = function (data, callback) {
 	}
 };
 
-// Users - put
-// Required data: phone
-// Optional data: fname, lname, password (at least one must be specified)
+// <host>/users - put
 /**
+ * http PUT method to update data of an already present user
+ * 
+ * Required data: phone | passed as a queryString parameter with '/users' route
+ * @example /users?phone=1234567890
+ *  
+ * Optional data: firstName, lastName, password (at least one must be specified) | passed as payload to '/users' route
+ * 
+ * @param {*} data : object from the http request that includes required details to read a user and update
+ * @param {*} callback : return respective statusCode (and error) based on the operation
+ * 
  * @TODO Only let an authenticated user access their object
  * don't let anyone else access their object
  */
@@ -163,12 +193,21 @@ handlers._users.put = function (data, callback) {
 	}
 };
 
-// Users - delete
-// Required data: phone
+// <host>/users - delete
 /**
+ * http DELETE method to remove an already present user
+ * 
+ * Required data: phone | passed as a queryString parameter with '/users' route
+ * @example /users?phone=1234567890
+ * 
+ * @param {*} data : object from the http request that includes required details to read a user and delete
+ * @param {*} callback : return respective statusCode (and error) based on the operation
+ * 
  * @TODO Only let an authenticated user access their object
  * don't let anyone else access their object
+ * 
  * @TODO clean up or delete any other data files associated to the user
+ * 
  */
 handlers._users.delete = function (data, callback) {
 	// Check that the phone number is valid
@@ -196,13 +235,32 @@ handlers._users.delete = function (data, callback) {
 };
 
 // notFound handler
+// <host>/<any-invalid-route>
+/**
+ * 
+ * This handler is basically a redirect to any route which is invalid
+ * If a user tries to access a route that is invalid, they are redirected to this handler
+ * 
+ * @param {*} data : object from the http request
+ * @param {*} callback : return 404 statusCode
+ * 
+ */
 handlers.notFound = function (data, callback) {
 	callback(404);
 };
 
 // PING handler
+// '<host>/ping' route
+/**
+ * Basic route to check the availability of the server
+ * 
+ * @param {*} data : object from the http request
+ * @param {*} callback : return 200 statusCode
+ * 
+ */
 handlers.ping = function(data, callback) {
 	callback(200);
 };
 
+// export the module
 module.exports = handlers;
