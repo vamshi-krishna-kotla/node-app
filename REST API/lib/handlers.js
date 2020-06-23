@@ -5,6 +5,7 @@
 // Dependencies
 const _data = require('./data');
 const helpers = require('./helpers');
+const config = require('./config');
 
 // define the handlers for each route (valid route)
 var handlers = {};
@@ -489,6 +490,149 @@ handlers._tokens.verifyToken = function (id, phone, callback) {
 		}	
 	});
 };
+
+// <host>/checks route
+/**
+ * 
+ * 
+ * This function filters the handler based on the HTTP method
+ * - uses the 'data.method' param for filtering
+ * @param {*} data : the object coming from the calling function; has the details of the HTTP request basically
+ * @param {*} callback : returns 405 if an invalid method is given
+ */
+handlers.checks = function (data, callback) {
+	const acceptableMethods = ["post", "get", "put", "delete"];
+	if(acceptableMethods.indexOf(data.method) > -1) {
+		handlers._checks[data.method](data, callback);
+	}
+	else {
+		callback(405);
+	}
+};
+
+// Container for all the checks methods
+handlers._checks = {};
+
+// <host>/tokens - post
+/**
+ * 
+ * Required data: protocol, url, method, successCodes, timeoutSeconds | passed as payload to '/checks' route
+ * protocol: over which protocol is the user requesting the check [http/https]
+ * url: URL given to be added to the check
+ * method: http method to be performed to the given URL
+ * successCodes: array of code that are considered as a successful ping
+ * timeoutSeconds: the timeout to accept a responce from the http request sent to the url
+ * 
+ * Required data: token | passed as headers
+ * token => the token generated previously for a user, used for authentication
+ * 
+ * Optional data: none
+ * 
+ * @param {*} data : object from the http request that includes required details to create a new check
+ * @param {*} callback : return respective statusCode (and error) based on the operation
+ */
+handlers._checks.post = function (data, callback) {
+	// validate all the inputs
+	const protocol = (typeof(data.payload.protocol) == 'string' && ['https', 'http'].indexOf(data.payload.protocol.trim()) > -1) ? data.payload.protocol.trim() : false;
+	const url = (typeof(data.payload.url) == 'string' && data.payload.url.trim().length > 0) ? data.payload.url.trim() : false;
+	const method = (typeof(data.payload.method) == 'string' && ['post', 'get', 'put', 'delete'].indexOf(data.payload.method) > -1) ? data.payload.method : false;
+	const successCodes = ((typeof(data.payload.successCodes) == 'object') && (data.payload.successCodes instanceof Array) && (data.payload.successCodes.length > 0)) ? data.payload.successCodes : false;
+	const timeoutSeconds = ((typeof(data.payload.timeoutSeconds) == 'number') && (data.payload.timeoutSeconds %1 === 0) && (data.payload.timeoutSeconds >=1) && (data.payload.timeoutSeconds <=5)) ? data.payload.timeoutSeconds : false;
+
+	if(protocol && url && method && successCodes && timeoutSeconds) {
+		// get the token from headers
+		const token = (typeof(data.headers.token) == "string") ? data.headers.token : false;
+
+		// lookup the user by reading the token
+		_data.read('tokens', token, function(err, tokenData){
+			if(!err && tokenData) {
+				const userPhone = tokenData.phone;
+
+				// lookup the user data
+				_data.read('users', userPhone, function (err, userData) {
+					if(!err && userData) {
+						// add new checks to the checks array of the user or create an empty array and add
+						const userChecks = ((typeof(userData.checks) == 'object') && (userData.checks instanceof Array)) ? userData.checks : [];
+
+						// verify the user has less than the number of max checks allowed
+						if(userChecks.length < config.maxChecks) {
+							// create a random ID for the check
+							const checkId = helpers.createRandomString(20);
+
+							// create the check object and include user's phone
+							const checkObject = {
+								'id': checkId,
+								'userPhone': userPhone,
+								'protocol': protocol,
+								'url': url,
+								'method': method,
+								'successCodes': successCodes,
+								'timeoutSeconds': timeoutSeconds
+							};
+
+							// save the object
+							_data.create('checks', checkId, checkObject, function (err) {
+								if(!err) {
+									// add the checkId to the users object
+									userData.checks = userChecks;
+									userData.checks.push(checkId);
+
+									// save the new user data
+									_data.update('users', userPhone, userData, function (err) {
+										if(!err) {
+											callback(200, checkObject);
+										}
+										else {
+											callback(500, {'Error': 'Could not update the user with new check'});
+										}
+									});
+								}
+								else {
+									callback(500, {'Error': 'Could not create the new check'});
+								}
+							});
+						}
+						else {
+							callback(400, {'Error': `User already has max number of checks (${config.maxChecks})`});
+						} 
+					}
+					else {
+						callback(403, {'Error': 'Not authorized'});
+					}
+				});
+			}
+			else {
+				callback(403, {'Error': 'Not authorized'});
+			}
+		}); 
+	}
+	else {
+		callback(400, {'Error': 'Missing required inputs or inputs are invalid'});
+	}
+
+};
+
+// <host>/tokens - get
+// Required data: protocol, url, method, sussessCode, timeoutSeconds
+// Optional data: none
+handlers._checks.get = function (params) {
+	// validate all the inputs
+};
+
+// <host>/tokens - put
+// Required data: protocol, url, method, sussessCode, timeoutSeconds
+// Optional data: none
+handlers._checks.put = function (params) {
+	// validate all the inputs
+};
+
+// <host>/tokens - delete
+// Required data: protocol, url, method, sussessCode, timeoutSeconds
+// Optional data: none
+handlers._checks.delete = function (params) {
+	// validate all the inputs
+};
+
 
 // notFound handler
 // <host>/<any-invalid-route>

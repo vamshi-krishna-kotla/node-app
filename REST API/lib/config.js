@@ -10,13 +10,15 @@ var environments = {
 	"staging": {
 		'port': 3000,
 		'envName': 'staging',
-		'hashingSecret': 'thisIsASecret'
+		'hashingSecret': 'thisIsASecret',
+		'maxChecks': 5
 	},
 	// production environment
 	"production": {
 		'port': 5000,
 		'envName': 'production',
-		'hashingSecret': 'thisIsAlsoASecret'
+		'hashingSecret': 'thisIsAlsoASecret',
+		'maxChecks': 5
 	}
 };
 
