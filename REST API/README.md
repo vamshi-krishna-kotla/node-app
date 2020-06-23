@@ -27,7 +27,12 @@
 * add few users with required details [using POST request to `/users` route]
 * create a directory `.data/tokens`
 * add few tokens with required details [using POST request to `/tokens` route]
+* create a directory `.data/checks`
+* add few checks with required details [using POST request to `/checks` route]
 ## 
 * details of a user can be `READ`/`UPDATED`/`DELETED` only if a valid token is present for that user
 * each token has an expiration time of 1 hour which is validated(authentication) before `read(GET)`/`update(PUT)`/`remove(DELETE)` requests for that user
-* #### the token has to be passed as a request header to be read by the handler, to proceed with the authentication
+* user can create their "checks" (max. 5) which have the details about the target URL, method and other required fields, that the user wants to "check"
+#### the token has to be passed as a request header to be read by the handler, to proceed with the authentication
+- for GET, PUT, DELETE requests made to `/users` route
+- for all the requests made to `/checks` route
