@@ -13,8 +13,11 @@
 	* notFound : return statusCode 404; a redirect for any invalid route
 	* users : has CRUD operations facility to work with "users" directory inside ".data" folder
 	* tokens : has CRUD operations facility to work with "tokens" directory inside ".data" folder
-		- a unique token is generated for a user
+		- a unique `token` is generated for a user
 		- there can be multiple tokens for a single user
+	* checks : has CRUD operations facility to work with "checks" directory inside ".data" folder
+		- `check` is basically the service that tells the system to check certain URL, whether it is UP or DOWN, and notify the user that created the check
+		- authenticated users, via their `tokens` can create their `checks` [maximum 5 checks allowed per user]
 
 ### CRUD operations are configured in /lib/data.js
 * each operation works with files inside the ".data" folder
