@@ -227,8 +227,6 @@ handlers._users.put = function (data, callback) {
  * @param {*} data : object from the http request that includes required details to read a user and delete
  * @param {*} callback : return respective statusCode (and error) based on the operation
  * 
- * @TODO clean up or delete any other data files associated to the user
- * 
  */
 handlers._users.delete = function (data, callback) {
 	// Check that the phone number is valid
@@ -242,7 +240,31 @@ handlers._users.delete = function (data, callback) {
 					if(!err && data) {
 						_data.delete('users', phone, function (err) {
 							if(!err) {
-								callback(200);
+								// delete each of the checks associated with the user
+								const userChecks = ((typeof(data.checks) == 'object') && (data.checks instanceof Array)) ? data.checks : [];
+								const checksToDelete = userChecks.length;
+								if(checksToDelete > 0) {
+									var deletionError = false;
+									
+									// loop through checks
+									userChecks.forEach(function(checkId) {
+										_data.delete('checks', checkId, function (err) {
+											if(err) {
+												deletionError = true;
+											}
+										});
+									});
+									if(!deletionError) {
+										callback(200);
+									}
+									else {
+										callback(500, {'Error': `Errors encountered while attempting to delete all of user's checks. 
+											All checks may not have been deleted successfully`})
+									}
+								}
+								else {
+									callback(200);
+								}
 							}
 							else {
 								callback(500, {'Error': 'Could not delete specified user'});
@@ -638,7 +660,6 @@ handlers._checks.get = function (data, callback) {
 				const token = typeof(data.headers.token) == 'string' ? data.headers.token : false;
 				// verify that the given token is valid and belongs to the user who created the check
 				handlers._tokens.verifyToken(token, checkData.userPhone, function (tokenIsValid) {
-					console.log(tokenIsValid);
 					if(tokenIsValid) {
 						// if token is valid then return the checkData
 						callback(200, checkData);
@@ -759,7 +780,6 @@ handlers._checks.put = function (data, callback) {
 handlers._checks.delete = function (data, callback) {
 	// check for the required field : id (checkID)
 	const id = (typeof(data.queryStringObject.id) == 'string' && data.queryStringObject.id.trim().length == 20) ? data.queryStringObject.id : false;
-	console.log(id)
 	if(id) {
 		// lookup the check
 		_data.read('checks', id, function (err, checkData) {
