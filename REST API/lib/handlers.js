@@ -34,7 +34,7 @@ handlers._users = {};
 /**
  * http POST method to include new user
  * 
- * Required data: firstName, lastName, phone, password, tosAgreement | passed as payload to '/users' route
+ * Required data: firstName, lastName, email, phone, password, tosAgreement | passed as payload to '/users' route
  * 
  * Optional data: none
  * 
@@ -45,11 +45,12 @@ handlers._users.post = function (data, callback) {
 	// Check that all required fiels are filled out
 	var firstName = (typeof(data.payload.firstName) == 'string' && data.payload.firstName.trim().length > 0) ? data.payload.firstName.trim() : false;
 	var lastName = (typeof(data.payload.lastName) == 'string' && data.payload.lastName.trim().length > 0) ? data.payload.lastName.trim() : false;
+	var email = (typeof(data.payload.email) == 'string' && data.payload.email.trim().length > 0) ? data.payload.email.trim() : false;
 	var phone = (typeof(data.payload.phone) == 'string' && data.payload.phone.trim().length == 10) ? data.payload.phone.trim() : false;
 	var password = (typeof(data.payload.password) == 'string' && data.payload.password.trim().length > 0) ? data.payload.password.trim() : false;
 	var tosAgreement = (typeof(data.payload.tosAgreement) == 'boolean' && data.payload.tosAgreement == true) ? true : false;
 
-	if(firstName && lastName && phone && password && tosAgreement) {
+	if(firstName && lastName && email && phone && password && tosAgreement) {
 		//  Make sure that the user doesn't already exist
 		_data.read('users', phone, function (err, data) {
 			// expecting 'err' to be valid because we should not be having a user already
@@ -63,6 +64,7 @@ handlers._users.post = function (data, callback) {
 					var userObject = {
 						'firstName': firstName,
 						'lastName': lastName,
+						'email': email,
 						'phone': phone,
 						'hashedPassword': hashedPassword,
 						'tosAgreement': true
@@ -150,7 +152,7 @@ handlers._users.get = function (data, callback) {
  * Required data: phone | passed as a queryString parameter with '/users' route
  * @example /users?phone=1234567890
  *  
- * Optional data: firstName, lastName, password (at least one must be specified) | passed as payload to '/users' route
+ * Optional data: firstName, lastName, email, password (at least one must be specified) | passed as payload to '/users' route
  * 
  * @param {*} data : object from the http request that includes required details to read a user and update
  * @param {*} callback : return respective statusCode (and error) based on the operation
@@ -163,12 +165,13 @@ handlers._users.put = function (data, callback) {
 	// check for the optional field
 	const firstName = (typeof(data.payload.firstName) == 'string' && data.payload.firstName.trim().length > 0) ? data.payload.firstName.trim() : false;
 	const lastName = (typeof(data.payload.lastName) == 'string' && data.payload.lastName.trim().length > 0) ? data.payload.lastName.trim() : false;
+	const email = (typeof(data.payload.email) == 'string' && data.payload.email.trim().length > 0) ? data.payload.email.trim() : false;
 	const password = (typeof(data.payload.password) == 'string' && data.payload.password.trim().length > 0) ? data.payload.password.trim() : false;
 
 	// error if phone is invalid
 	if(phone) {
 		// error if nothing is sent for updating
-		if(firstName || lastName || password){
+		if(firstName || lastName || email || password){
 			// get the token from the headers
 			const token = typeof(data.headers.token) == 'string' ? data.headers.token : false;
 			handlers._tokens.verifyToken(token, phone, function (tokenIsValid) {
@@ -181,6 +184,9 @@ handlers._users.put = function (data, callback) {
 							}
 							if(lastName) {
 								userData.lastName = lastName;
+							}
+							if(email) {
+								userData.email = email;
 							}
 							if(password) {
 								userData.hashedPassword = helpers.hash(password);
