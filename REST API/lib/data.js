@@ -141,5 +141,26 @@ lib.delete = function (dir, file, callback) {
 	});	
 };
 
+/**
+ * List the content in a directory
+ * 
+ * @param {*} dir : directory inside the .data folder to be accessed
+ * @param {*} callback : returns err:false and list of files, if files are found inside the directory
+ */
+lib.list = function (dir, callback) {
+	fs.readdir(lib.baseDir+dir+'/', function (err, data) {
+		if(!err && data && data.length > 0) {
+			var trimmedFilenames = [];
+			data.forEach(function (fileName) {
+				trimmedFilenames.push(fileName.replace('.json', ''));
+			});
+			callback(false, trimmedFilenames);
+		}
+		else {
+			callback(err, data);
+		}
+	});
+};
+
 // Export the module
 module.exports = lib;
