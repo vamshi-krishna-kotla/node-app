@@ -52,7 +52,13 @@ workers.validateCheckData = function (originalCheckData) {
 /**
  * Perform the check, send the original checkData and outcome of the process to next step
  * 
- * @param {*} originalCheckData 
+ * @param {*} originalCheckData : the data read from the respective check
+ * Includes the data given by the user while registering the check
+ * - protocol
+ * - url
+ * - method
+ * - successCodes
+ * - timeoutSeconds
  */
 workers.performCheck = function (originalCheckData) {
 	// prepare the initial check outcome
@@ -61,7 +67,8 @@ workers.performCheck = function (originalCheckData) {
 		'responseCode': false
 	};
 
-	// mark that the outcome has not been sent yet
+	// variable to verify whether a check has been performed or not 
+	// mark that the outcome has not been sent yet, as a default
 	var outcomeSent = false;
 
 	// parse the hostname and path out of originalCheckData
@@ -127,8 +134,16 @@ workers.performCheck = function (originalCheckData) {
  * Process the check outcome and update the checkData as needed
  * Special logic for accomodating a check that has never been tested before; do not alert on such
  * 
- * @param {*} originalCheckData 
- * @param {*} checkOutcome 
+ * @param {*} originalCheckData :  the data read from the respective check
+ * Includes the data given by the user while registering the check
+ * - protocol
+ * - url
+ * - method
+ * - successCodes
+ * - timeoutSeconds
+ * 
+ * @param {*} checkOutcome : has the outcome of performing a respective check
+ * - valid only after the outcomeSent is verified
  * 
  * @TODO 
  * Trigger an alert to the user if needed
@@ -140,7 +155,7 @@ workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
 	// decide if an alert is warranted
 	var alertWarranted = ((originalCheckData.lastChecked) && (originalCheckData.state != state)) ? true : false;
 
-	// update the checkData
+	// update the checkData with the 'state' and 'lastChecked' timestamp
 	var newCheckData = originalCheckData;
 	newCheckData.state = state;
 	newCheckData.lastChecked = Date.now();
@@ -165,7 +180,8 @@ workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
 /**
  * Alert the user with given phone number or mail regarding the check
  * 
- * @param {*} newCheckData
+ * @param {*} newCheckData : updated data of certain check after its check has been performed
+ * Includes default checkData present when a check is read and two added parameters [state, lastChecked]
  * 
  * @todo
  * notify the respective user 
