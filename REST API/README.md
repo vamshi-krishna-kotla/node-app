@@ -1,7 +1,21 @@
 # This part of the application has the code for a REST API
 
-## FILESYSTEM has been used for data storage
+**Note:** FILESYSTEM has been used for data storage
 
+______________________________
+------------------------------
+
+## Background workers - configured to perform checks given by different users
+#### this part of the API works in the background and is opaque to the user
+
+* The workers perform the given network request, passed in the `check` details by the user
+* All the checks are performed once every minute
+* The host, url, method, success-codes etc. are fetched from the `.data/checks` directory
+* The `state` of the check and `lastChecked` timestamp are pushed into the respective check data
+______________________________
+------------------------------
+
+## API for the user to create checks, after successful authentication
 #### server runs on PORT 5000 for production environment and 3000 for any other
 
 * run `set NODE_ENV=production && node index`
@@ -21,6 +35,9 @@
 
 ### CRUD operations are configured in /lib/data.js
 * each operation works with files inside the ".data" folder
+
+______________________________
+------------------------------
 
 # Working flow of the API
 * create a directory `.data/users`
