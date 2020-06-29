@@ -11,6 +11,7 @@ const config = require('./config');
 const handlers = require('./handlers');
 const helpers = require('./helpers');
 
+// initialize the server object
 var server = {};
 
 // server should respond to all requests with a string
@@ -98,7 +99,7 @@ server.router = {
 server.init = function () {
 	// start the server and listen
 	server.httpServer.listen(config.port, function () {
-		console.log("Server is listening on PORT "+config.port+" in "+config.envName+" mode");
+		console.log("Server is listening on PORT "+ "\x1b[35m" + config.port + "\x1b[0m" + " in "+ "\x1b[36m" + config.envName+ "\x1b[0m" + " mode");
 	})
 };
 
