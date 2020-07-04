@@ -5,10 +5,8 @@
 
 // dependencies
 const _data = require('./data');
-const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const path = require('path');
 const url = require('url');
 
 // initialize the workers object
