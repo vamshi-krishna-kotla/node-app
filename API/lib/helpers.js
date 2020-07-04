@@ -71,5 +71,17 @@ helpers.createRandomString = function (strLength) {
 	}
 };
 
+/**
+ * Prints lines to console only when NODE_DEBUG env variable is set
+ * 
+ * @param {*} str : string to be printed to the console when process.env.NODE_DEBUG is set to 'true'
+ */
+helpers.debug = function (str) {
+	const print = ((typeof(process.env.NODE_DEBUG) == "string") && process.env.NODE_DEBUG.toLowerCase().replace(/ /g, '') == "true") ? true : false;
+	if(print) {
+		console.log(str);
+	}	
+};
+
 // export the container
 module.exports = helpers;

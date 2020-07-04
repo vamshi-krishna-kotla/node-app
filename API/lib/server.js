@@ -74,7 +74,7 @@ server.httpServer = http.createServer(function (req, res) {
 			res.end(payloadString);
 
 			// log the request path
-			console.log(`Response: {\n Status:\x1b[34m ${statusCode} \x1b[0m \n Path:\x1b[34m ${path} \x1b[0m \n Method:\x1b[34m ${method} \x1b[0m \n Payload:\x1b[34m ${payloadString} \x1b[0m \n}`);
+			helpers.debug(`Response: {\n Status:\x1b[34m ${statusCode} \x1b[0m \n Path:\x1b[34m ${path} \x1b[0m \n Method:\x1b[34m ${method} \x1b[0m \n Payload:\x1b[34m ${payloadString} \x1b[0m \n}`);
 		});
 	});	
 });

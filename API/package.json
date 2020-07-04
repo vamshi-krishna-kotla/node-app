@@ -1,0 +1,14 @@
+{
+	"name": "rest-api",
+	"version": "0.1.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"server:dev": "set NODE_DEBUG=true && nodemon index",
+		"server:staging": "node index",
+		"server:prod": "set NODE_ENV=production && node index"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}

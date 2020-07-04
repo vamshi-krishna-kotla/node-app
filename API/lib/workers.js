@@ -8,6 +8,7 @@ const _data = require('./data');
 const http = require('http');
 const https = require('https');
 const url = require('url');
+const helpers = require('./helpers');
 
 // initialize the workers object
 var workers = {};
@@ -42,7 +43,7 @@ workers.validateCheckData = function (originalCheckData) {
 		workers.performCheck(originalCheckData);
 	}
 	else {
-		console.log('\x1b[31m' + 'Error: One of the checks is not properly formatted; skipping it' + '\x1b[0m');
+		helpers.debug('\x1b[31m' + 'Error: One of the checks is not properly formatted; skipping it' + '\x1b[0m');
 	}
 };
 
@@ -165,11 +166,11 @@ workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
 				workers.alertUserToStatusChange(newCheckData);
 			}
 			else {
-				console.log('\x1b[33m'+'Check: '+ newCheckData.id +' has not changed; no alert needed'+ '\x1b[0m')
+				helpers.debug('\x1b[33m'+'Check: '+ newCheckData.id +' has not changed; no alert needed'+ '\x1b[0m')
 			}
 		}
 		else {
-			console.log('\x1b[31m'+'Error: Trying to save updates to one of the checks'+'\x1b[0m');
+			helpers.debug('\x1b[31m'+'Error: Trying to save updates to one of the checks'+'\x1b[0m');
 		}
 	})
 };
@@ -185,7 +186,7 @@ workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
  */
 workers.alertUserToStatusChange = function (newCheckData) {
 	// alert the user 
-	console.log('Alert the user: '+ newCheckData.userPhone + ' for the check:' + newCheckData.id);
+	helpers.debug('Alert the user: '+ newCheckData.userPhone + ' for the check:' + newCheckData.id);
 };
 
 /**
@@ -203,17 +204,17 @@ workers.gatherAllChecks = function () {
 							workers.validateCheckData(originalCheckData);
 						}
 						else {
-							console.log('\x1b[31m' + 'Error reading one of the check\'s data:' + originalCheckData.id + '\x1b[0m');
+							helpers.debug('\x1b[31m' + 'Error reading one of the check\'s data:' + originalCheckData.id + '\x1b[0m');
 						}
 					});
 				});
 			}
 			else {
-				console.log('\x1b[33m' + 'No checks currently!' + '\x1b[0m');
+				helpers.debug('\x1b[33m' + 'No checks currently!' + '\x1b[0m');
 			}
 		}
 		else {
-			console.log('\x1b[31m' + 'Error listing checks!' + '\x1b[0m');
+			helpers.debug('\x1b[31m' + 'Error listing checks!' + '\x1b[0m');
 		}
 	});
 };
