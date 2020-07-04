@@ -10,7 +10,6 @@ const http = require('http');
 const https = require('https');
 const path = require('path');
 const url = require('url');
-const { allowedNodeEnvironmentFlags } = require('process');
 
 // initialize the workers object
 var workers = {};
