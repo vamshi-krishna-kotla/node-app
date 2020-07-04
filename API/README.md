@@ -1,4 +1,4 @@
-# This part of the application has the code for a REST API
+# REST *(REpresentational State Transfer)* API
 
 **Note:** FILESYSTEM has been used for data storage
 
