@@ -17,10 +17,10 @@ lib.baseDir = path.join(__dirname, '/../.data/');
 /**
  * Write data to a file
  * 
- * @param {*} dir : directory inside the .data folder to be accessed
- * @param {*} file : file inside the given directory to be created new
- * @param {*} data : JSON data to be written to the file
- * @param {*} callback : returns any error if operation failed else returns false
+ * @param {String} dir : directory inside the .data folder to be accessed
+ * @param {String} file : file inside the given directory to be created new
+ * @param {Object} data : JSON data to be written to the file
+ * @param {Function} callback : returns any error if operation failed else returns false
  */
 lib.create = function (dir, file, data, callback) {
 	// Open the file for writing
@@ -58,9 +58,9 @@ lib.create = function (dir, file, data, callback) {
 /**
  * Read data from a file
  * 
- * @param {*} dir : directory inside the .data folder to be accessed
- * @param {*} file : file inside the given directory, whose contents are to be read
- * @param {*} callback : returns data read from the file, after parsing the data, and error:false else returns an error and data:undefined
+ * @param {String} dir : directory inside the .data folder to be accessed
+ * @param {String} file : file inside the given directory, whose contents are to be read
+ * @param {Function} callback : returns data read from the file, after parsing the data, and error:false else returns an error and data:undefined
  */
 lib.read = function (dir, file, callback) {
 	fs.readFile(lib.baseDir + dir + '/' + file + '.json', 'utf8', function(err, data){
@@ -79,10 +79,10 @@ lib.read = function (dir, file, callback) {
  * Update the data inside an exisiting file
  * Truncates any current data present currently in a file and writes new data
  * 
- * @param {*} dir : directory inside the .data folder to be accessed
- * @param {*} file : file inside the given directory to be accessed; needs to be already present
- * @param {*} data : JSON data to be written to the file
- * @param {*} callback : returns any error if operation failed else returns false
+ * @param {String} dir : directory inside the .data folder to be accessed
+ * @param {String} file : file inside the given directory to be accessed; needs to be already present
+ * @param {Object} data : JSON data to be written to the file
+ * @param {Function} callback : returns any error if operation failed else returns false
  */
 lib.update = function (dir, file, data, callback) {
 	// the "r+" switch is used to work with an already existing file
@@ -126,9 +126,9 @@ lib.update = function (dir, file, data, callback) {
 /**
  * Delete a file
  * 
- * @param {*} dir : directory inside the .data folder to be accessed
- * @param {*} file : file inside the given directory, that has to be deleted
- * @param {*} callback : returns err:false if file is deleted successfully else returns a string
+ * @param {String} dir : directory inside the .data folder to be accessed
+ * @param {String} file : file inside the given directory, that has to be deleted
+ * @param {Function} callback : returns err:false if file is deleted successfully else returns a string
  */
 lib.delete = function (dir, file, callback) {
 	fs.unlink(lib.baseDir + dir + '/' + file + '.json', function (err) {
@@ -144,8 +144,8 @@ lib.delete = function (dir, file, callback) {
 /**
  * List the content in a directory
  * 
- * @param {*} dir : directory inside the .data folder to be accessed
- * @param {*} callback : returns err:false and list of files, if files are found inside the directory
+ * @param {String} dir : directory inside the .data folder to be accessed
+ * @param {Function} callback : returns err:false and list of files, if files are found inside the directory
  */
 lib.list = function (dir, callback) {
 	fs.readdir(lib.baseDir+dir+'/', function (err, data) {

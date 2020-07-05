@@ -27,7 +27,7 @@ ______________________________
 	* notFound : return statusCode 404; a redirect for any invalid route
 	* users : has CRUD operations facility to work with "users" directory inside ".data" folder
 	* tokens : has CRUD operations facility to work with "tokens" directory inside ".data" folder
-		- a unique `token` is generated for a user
+		- a unique `token` is generated for a user, ***which is valid only for an hour***
 		- there can be multiple tokens for a single user
 	* checks : has CRUD operations facility to work with "checks" directory inside ".data" folder
 		- `check` is basically the service that tells the system to check certain URL, whether it is UP or DOWN, and notify the user that created the check

@@ -14,8 +14,8 @@ var handlers = {};
 /**
  * This function filters the handler based on the HTTP method
  * - uses the 'data.method' param for filtering
- * @param {*} data : the object coming from the calling function; has the details of the HTTP request basically
- * @param {*} callback : returns 405 if an invalid method is given
+ * @param {Object} data : the object coming from the calling function; has the details of the HTTP request basically
+ * @param {Function} callback : returns 405 if an invalid method is given
  */
 handlers.users = function (data, callback) {
 	const acceptableMethods = ["post", "get", "put", "delete"];
@@ -38,8 +38,8 @@ handlers._users = {};
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to add new user
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to add new user
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  */
 handlers._users.post = function (data, callback) {
 	// Check that all required fiels are filled out
@@ -106,8 +106,8 @@ handlers._users.post = function (data, callback) {
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a user
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a user
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._users.get = function (data, callback) {
@@ -153,8 +153,8 @@ handlers._users.get = function (data, callback) {
  *  
  * Optional data: firstName, lastName, email, password (at least one must be specified) | passed as payload to '/users' route
  * 
- * @param {*} data : object from the http request that includes required details to read a user and update
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a user and update
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._users.put = function (data, callback) {
@@ -228,8 +228,8 @@ handlers._users.put = function (data, callback) {
  * Required data: phone | passed as a queryString parameter with '/users' route
  * @example /users?phone=1234567890
  * 
- * @param {*} data : object from the http request that includes required details to read a user and delete
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a user and delete
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._users.delete = function (data, callback) {
@@ -297,8 +297,8 @@ handlers._users.delete = function (data, callback) {
  * 
  * This function filters the handler based on the HTTP method
  * - uses the 'data.method' param for filtering
- * @param {*} data : the object coming from the calling function; has the details of the HTTP request basically
- * @param {*} callback : returns 405 if an invalid method is given
+ * @param {Object} data : the object coming from the calling function; has the details of the HTTP request basically
+ * @param {Function} callback : returns 405 if an invalid method is given
  */
 handlers.tokens = function (data, callback) {
 	const acceptableMethods = ["post", "get", "put", "delete"];
@@ -324,8 +324,8 @@ handlers._tokens = {};
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to add new token
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to add new token
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  */
 handlers._tokens.post = function (data, callback) {
 	var phone = (typeof(data.payload.phone) == 'string' && data.payload.phone.trim().length == 10) ? data.payload.phone.trim() : false;
@@ -381,8 +381,8 @@ handlers._tokens.post = function (data, callback) {
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a token
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a token
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._tokens.get = function (data, callback) {
@@ -414,8 +414,8 @@ handlers._tokens.get = function (data, callback) {
  *  
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a token and update
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a token and update
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._tokens.put = function (data, callback) {
@@ -463,8 +463,8 @@ handlers._tokens.put = function (data, callback) {
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a token and delete
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a token and delete
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._tokens.delete = function (data, callback) {
@@ -495,9 +495,9 @@ handlers._tokens.delete = function (data, callback) {
 /**
  * Verify if a given token-id is currently valid for a given user
  * 
- * @param {*} id : token id to be validated with phone
- * @param {*} phone : phone number to be validated for a user
- * @param {*} callback : returns boolean result of validation
+ * @param {String} id : token id to be validated with phone
+ * @param {String} phone : phone number to be validated for a user
+ * @param {Function} callback : returns boolean result of validation
  */
 handlers._tokens.verifyToken = function (id, phone, callback) {
 	// look up the token
@@ -523,8 +523,8 @@ handlers._tokens.verifyToken = function (id, phone, callback) {
  * 
  * This function filters the handler based on the HTTP method
  * - uses the 'data.method' param for filtering
- * @param {*} data : the object coming from the calling function; has the details of the HTTP request basically
- * @param {*} callback : returns 405 if an invalid method is given
+ * @param {Object} data : the object coming from the calling function; has the details of the HTTP request basically
+ * @param {Function} callback : returns 405 if an invalid method is given
  */
 handlers.checks = function (data, callback) {
 	const acceptableMethods = ["post", "get", "put", "delete"];
@@ -555,8 +555,8 @@ handlers._checks = {};
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to create a new check
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to create a new check
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  */
 handlers._checks.post = function (data, callback) {
 	// validate all the inputs
@@ -650,8 +650,8 @@ handlers._checks.post = function (data, callback) {
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a check
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a check
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  */
 handlers._checks.get = function (data, callback) {
 	// Check that the id(checkId) is valid
@@ -695,8 +695,8 @@ handlers._checks.get = function (data, callback) {
  * 
  * Optional data: protocol, url, method, successCodes, timeoutSeconds (at least one must be specified) | passed as payload to the request
  * 
- * @param {*} data : object from the http request that includes required details to read a check and update
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a check and update
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  * 
  */
 handlers._checks.put = function (data, callback) {
@@ -778,8 +778,8 @@ handlers._checks.put = function (data, callback) {
  * 
  * Optional data: none
  * 
- * @param {*} data : object from the http request that includes required details to read a check and delete
- * @param {*} callback : return respective statusCode (and error) based on the operation
+ * @param {Object} data : object from the http request that includes required details to read a check and delete
+ * @param {Function} callback : return respective statusCode (and error) based on the operation
  */
 handlers._checks.delete = function (data, callback) {
 	// check for the required field : id (checkID)
@@ -852,8 +852,8 @@ handlers._checks.delete = function (data, callback) {
  * This handler is basically a redirect to any route which is invalid
  * If a user tries to access a route that is invalid, they are redirected to this handler
  * 
- * @param {*} data : object from the http request
- * @param {*} callback : return 404 statusCode
+ * @param {Object} data : object from the http request
+ * @param {Function} callback : return 404 statusCode
  * 
  */
 handlers.notFound = function (data, callback) {
@@ -865,8 +865,8 @@ handlers.notFound = function (data, callback) {
 /**
  * Basic route to check the availability of the server
  * 
- * @param {*} data : object from the http request
- * @param {*} callback : return 200 statusCode
+ * @param {Object} data : object from the http request
+ * @param {Function} callback : return 200 statusCode
  * 
  */
 handlers.ping = function(data, callback) {

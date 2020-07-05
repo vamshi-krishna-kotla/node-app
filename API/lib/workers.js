@@ -50,7 +50,7 @@ workers.validateCheckData = function (originalCheckData) {
 /**
  * Perform the check, send the original checkData and outcome of the process to next step
  * 
- * @param {*} originalCheckData : the data read from the respective check
+ * @param {Object} originalCheckData : the data read from the respective check
  * Includes the data given by the user while registering the check
  * - protocol
  * - url
@@ -132,7 +132,7 @@ workers.performCheck = function (originalCheckData) {
  * Process the check outcome and update the checkData as needed
  * Special logic for accomodating a check that has never been tested before; do not alert on such
  * 
- * @param {*} originalCheckData :  the data read from the respective check
+ * @param {Object} originalCheckData :  the data read from the respective check
  * Includes the data given by the user while registering the check
  * - protocol
  * - url
@@ -140,7 +140,7 @@ workers.performCheck = function (originalCheckData) {
  * - successCodes
  * - timeoutSeconds
  * 
- * @param {*} checkOutcome : has the outcome of performing a respective check
+ * @param {Object} checkOutcome : has the outcome of performing a respective check
  * - valid only after the outcomeSent is verified
  * 
  * @TODO 
@@ -178,7 +178,7 @@ workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
 /**
  * Alert the user with given phone number or mail regarding the check
  * 
- * @param {*} newCheckData : updated data of certain check after its check has been performed
+ * @param {Object} newCheckData : updated data of certain check after its check has been performed
  * Includes default checkData present when a check is read and two added parameters [state, lastChecked]
  * 
  * @todo
