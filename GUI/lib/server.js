@@ -19,6 +19,8 @@ server.httpServer.get('/', function (req, res) {
 	helpers.findPage('home', function(err, data) {
 		if(!err && data) {
 			// send the page template
+			res.status(200);
+			res.setHeader('Content-Type', 'text/html');
 			res.end(data);
 		}
 		else {
