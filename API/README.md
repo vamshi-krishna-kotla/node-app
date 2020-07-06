@@ -18,7 +18,7 @@ ______________________________
 ## API for the user to create checks, after successful authentication
 #### server runs on PORT 5000 for production environment and 3000 for any other
 
-* run `set NODE_ENV=production && node index`
+* run `set NODE_ENV=production && node index` [ref *'package.json'* for scripts ]
 * any other NODE_ENV value will be defaulted to PORT 3000 (staging currently)
 
 #### handlers are coded in an object to handle different routes
