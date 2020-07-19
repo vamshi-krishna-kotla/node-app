@@ -20,11 +20,11 @@ var helpers = {};
  * @param {String} fileName : name of the view that is requested
  * @param {Function} callback : returns entire page layout including the header and footer or an error
  */
-helpers.findPage = async function (fileName, callback) {
+helpers.findPage = function (fileName, callback) {
 	try {
-		var header = await fs.readFileSync(templates+'/_header.html', 'utf8');
-		var template = await fs.readFileSync(views+'/'+fileName+'.html','utf8');
-		var footer = await fs.readFileSync(templates+'/_footer.html', 'utf8');
+		var header = fs.readFileSync(templates+'/_header.html', 'utf8');
+		var template = fs.readFileSync(views+'/'+fileName+'.html','utf8');
+		var footer = fs.readFileSync(templates+'/_footer.html', 'utf8');
 		var page = header + template + footer;
 		callback(false, page);
 	} catch (err) {
