@@ -22,10 +22,13 @@ var helpers = {};
  */
 helpers.findPage = function (fileName, callback) {
 	try {
+		var baseTemplate = fs.readFileSync(views+'/'+fileName+'.html','utf8');
+
 		var header = fs.readFileSync(templates+'/_header.html', 'utf8');
-		var template = fs.readFileSync(views+'/'+fileName+'.html','utf8');
 		var footer = fs.readFileSync(templates+'/_footer.html', 'utf8');
-		var page = header + template + footer;
+	
+		var page = baseTemplate.replace('%%HEADER_PLACEHOLDER%%', header).replace('%%FOOTER_PLACEHOLDER%%', footer);
+
 		callback(false, page);
 	} catch (err) {
 		callback(err);
