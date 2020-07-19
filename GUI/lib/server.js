@@ -27,40 +27,43 @@ server.httpServer.get('/', function (req, res) {
 			// if page not found then call for an error
 			res.status(500);
 			console.log(err);
-			res.end('Error fetching template');
+			res.end('Error fetching home page');
 		}
 	});
 });
 
 // GET method handler for routes
 server.httpServer.get('/:route', function (req, res) {
-	// return the page template if the route is available; else redirect to error page
-	if(server.availableRoutes.includes(req.params.route)) {
-		// find the requested page as per the route
-		helpers.findPage(req.params.route, function(err, data) {
-			if(!err && data) {
-				// send the page template
-				res.status(200);
-				res.setHeader('Content-Type', 'text/html');
-				res.end(data);
-			}
-			else {
-				// if page not found then call for an error
-				res.status(500);
-				console.log(err);
-				res.end('Error fetching template');
-			}
-		});
+	var pageRoute = req.params.route;
+
+	// set default response status to 200
+	var resStatus = 200;
+
+	// if the route is available then return the page template
+	// else redirect to error page
+	if(!server.availableRoutes.includes(pageRoute)) {
+		// reset response status to 404
+		resStatus = 404;
+
+		// fetch 404 template
+		pageRoute = '404';
 	}
-	else {
-		// redirect to error page since the route is not available
-		res.status(404);
-		res.setHeader('Content-type', 'text/html');
-		/**
-		 * @TODO create an error page and redirect to it
-		 */
-		res.end('<h1>404 Page not found</h1>');
-	}
+
+	// find the requested page as per the route
+	helpers.findPage(pageRoute, function(err, data) {
+		if(!err && data) {
+			// send the page template
+			res.status(resStatus);
+			res.setHeader('Content-Type', 'text/html');
+			res.end(data);
+		}
+		else {
+			// if page not found then call for an error
+			res.status(500);
+			console.log(err);
+			res.end('Error fetching page');
+		}
+	});
 });
 
 // currently available routes for the GUI
