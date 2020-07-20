@@ -5,6 +5,8 @@
 
 // dependencies
 const express = require('express');
+const path = require('path');
+
 const helpers = require('./helpers');
 
 // initialize the server object
@@ -12,6 +14,9 @@ var server = {};
 
 // instantiate the Express server
 server.httpServer = express();
+
+// serving static assets
+server.httpServer.use('/static_assets', express.static(path.resolve(__dirname, '../dist')));
 
 // GET method handler for base route
 server.httpServer.get('/', function (req, res) {
