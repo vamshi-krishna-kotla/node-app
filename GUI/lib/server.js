@@ -18,13 +18,6 @@ server.httpServer = express();
 // serving static assets
 server.httpServer.use('/static_assets', express.static(path.resolve(__dirname, '../dist')));
 
-// when content in dist folder is unavailable then serve from src folder
-// currently using for CSS files
-/**
- * @todo generate CSS files during build and remove serving from src folder
- */
-server.httpServer.use('/static_assets', express.static(path.resolve(__dirname, '../src')));
-
 // GET method handler for base route
 server.httpServer.get('/', function (req, res) {
 	// find the requested page as per the route
