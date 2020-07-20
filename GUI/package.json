@@ -4,13 +4,16 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index",
-		"start:dev": "nodemon"
+		"start": "npm run build && node index",
+		"start:dev": "nodemon",
+		"build": "npx rimraf dist/ && webpack"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"express": "^4.17.1"
+		"express": "^4.17.1",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.12"
 	}
 }
