@@ -14,7 +14,13 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist', 'scripts'),
 		filename: '[name]'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				loader: ['style-loader', 'css-loader']
+			}
+		]
 	}
 }
-
-// console.log(fileMap)
