@@ -16,7 +16,7 @@ var server = {};
 server.httpServer = express();
 
 // serving static assets
-server.httpServer.use('/static_assets', express.static(path.resolve(__dirname, '../dist')));
+server.httpServer.use(express.static(path.resolve(__dirname, '../dist')));
 
 // GET method handler for base route
 server.httpServer.get('/', function (req, res) {
