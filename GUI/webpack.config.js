@@ -19,6 +19,11 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'scripts/[name].js'
 	},
+	devServer: {
+		proxy: {
+			'/': 'http://localhost:4000'
+		}
+	},
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: 'styles/[name].css'
