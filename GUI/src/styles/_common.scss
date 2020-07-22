@@ -1,6 +1,93 @@
-.menu {
-	display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-	justify-content: space-between;
+body, html, * {
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	position: relative;
+	font-family: cursive;
+
+	a {
+		text-decoration: none;
+	}
+
+	div {
+		position: relative;
+	}
+
+	#header {
+		display: flex;
+		background-color: aliceblue;
+		padding: 1.5rem 1rem;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-evenly;
+		
+		.link-to-home {
+			width: 50%;
+		}
+
+		.menu {
+			width: 50%;
+
+			.menu-list {
+				list-style-type: none;
+				display: grid;
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+			}
+		}
+	}
+
+	#footer {
+		margin: 1rem 2px;
+		padding: 1rem;
+		background-color: aliceblue;
+
+		.copyrights-text {
+			text-align: center;
+			font-weight: normal;
+		}
+
+		.content {
+			display: grid;
+			grid-template-columns: 1fr 0.75fr 1fr;
+			grid-template-areas: 
+				"dev-reference-links link-to-github social-share-icons"
+				"contact-info contact-info contact-info";
+
+			div {
+				border: 1px solid black;
+				margin: 0.25rem;
+				padding: 0.25rem;
+			}
+
+			.dev-reference-links, .social-share-icons {
+				ul {
+					list-style-type: none;
+				}
+			}
+			.dev-reference-links {
+				grid-area: dev-reference-links;
+				
+			}
+
+			.social-share-icons {
+				grid-area: social-share-icons;
+				
+				.share-icons-list {
+					display: flex;
+					flex-direction: row;
+				}
+			}
+
+			.link-to-github {
+				grid-area: link-to-github;
+			}
+
+			.contact-info {
+				grid-area: contact-info;
+			}
+			
+		}
+	}
 }
