@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const env = (process.env.ENV || 'none').trim();
+
 const scriptsPath = path.resolve(__dirname, 'src', 'scripts');
 const scripts = fs.readdirSync( scriptsPath, "utf8" );
 
@@ -12,6 +14,7 @@ scripts.forEach(script => {
 
 module.exports = {
 	entry: fileMap,
+	mode: env,
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'scripts/[name].js'

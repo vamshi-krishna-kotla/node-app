@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "npm run build && node index",
 		"start:dev": "nodemon",
-		"build": "npx rimraf dist/ && webpack"
+		"build": "npx rimraf dist && set ENV=production && webpack",
+		"build:dev": "npx rimraf dist && set ENV=development && webpack"
 	},
 	"keywords": [],
 	"author": "",
