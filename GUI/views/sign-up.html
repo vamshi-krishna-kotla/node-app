@@ -19,15 +19,15 @@
 				<fieldset>
 					<legend>Fill in your data</legend>
 					<div class="input-data">
-						<input type="text" class="firstName" placeholder="First name" required>
-						<input type="text" class="lastName" placeholder="Last name" required>
-						<input type="email" class="email" placeholder="User email" required>
-						<input type="tel" class="phone" placeholder="Phone" required>
-						<input type="password" class="password" placeholder="Password" required>
-						<input type="password" class="reenter-password" placeholder="Re-enter Password">
+						<input type="text" class="firstName" placeholder="First name" required autocomplete="off">
+						<input type="text" class="lastName" placeholder="Last name" required autocomplete="off">
+						<input type="email" class="email" placeholder="User email" required autocomplete="off">
+						<input type="tel" class="phone" placeholder="Phone" required autocomplete="off">
+						<input type="password" class="password" placeholder="Password" required autocomplete="off">
+						<input type="password" class="reenter-password" placeholder="Re-enter Password" required autocomplete="off">
 						<span class="tosAgreement">
-							<label for="tosAgreement">I agree to the terms and conditions:</label>
-							<input type="checkbox" name="tosAgreement">
+							<label for="tosAgreement">I agree to the <a href="#">terms and conditions</a>:</label>
+							<input type="checkbox" name="tosAgreement" required>
 						</span>
 						<input type="submit" class="submit-new-user" value="Submit">
 					</div>
