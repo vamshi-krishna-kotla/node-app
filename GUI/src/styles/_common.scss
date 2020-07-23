@@ -21,7 +21,7 @@ body, html, * {
 		padding: 1.5rem 1rem;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-around;
 		
 		.link-to-home {
 			width: 50%;
@@ -77,7 +77,7 @@ body, html, * {
 					list-style-type: none;
 					display: flex;
 					flex-direction: row;
-					justify-content: space-evenly;
+					justify-content: space-around;
 
 					li {
 						display: flex;
@@ -111,7 +111,7 @@ body, html, * {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
-				justify-content: space-evenly;
+				justify-content: space-around;
 
 				img {
 					width: 50px;
