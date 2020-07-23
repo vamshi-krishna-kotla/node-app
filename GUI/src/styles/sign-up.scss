@@ -1,0 +1,85 @@
+@import '../styles/_common.scss';
+
+
+.page-content {
+	height: 75vh;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	h1 {
+		margin: 1rem;
+	}
+
+	#user-data {
+		margin: 1rem;
+		width: 55%;
+
+		fieldset {
+			padding: 1rem;
+			border-radius: 0.75rem;
+
+			.input-data {
+				font-family: sans-serif;
+				margin: 0.5rem;
+				display: grid;
+				grid-template-areas:
+					"firstName lastName"
+					"email email"
+					"phone phone"
+					"password reenter-password"
+					"tosAgreement tosAgreement"
+					"submit-new-user submit-new-user";
+
+				input:not([type=checkbox]):not([type=submit]) {
+					border: none;
+					border-bottom: 1px solid black; 
+					margin: 0.5rem;
+					padding: 0.5rem;
+				}
+					
+				.firstName {
+					grid-area: firstName;
+				}
+
+				.lastName {
+					grid-area: lastName;
+				}
+
+				.email {
+					grid-area: email;
+				}
+
+				.phone {
+					grid-area: phone;
+				}
+
+				.password {
+					grid-area: password;
+				}
+
+				.reenter-password {
+					grid-area: reenter-password;
+				}
+
+				.tosAgreement {
+					grid-area: tosAgreement;
+					margin: 0.75rem;
+				}
+
+				.submit-new-user {
+					grid-area: submit-new-user;
+					width: 20%;
+					border: none;
+					border-radius: 0.25rem;
+					margin: 0.5rem auto;
+					padding: 0.5rem;
+					color: white;
+					background-color: rgba(48, 48, 192, $alpha: 1.0);
+				}
+			}
+		}
+	}
+}

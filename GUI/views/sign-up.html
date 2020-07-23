@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="/styles/sign-up.css">
+	<script src="/scripts/sign-up.js"></script>
+</head>
+<body>
+	<!-- start the #main container of the page -->
+	<div id="main">
+
+		%%HEADER_PLACEHOLDER%%
+
+		<div class="page-content">
+			<h1>Create a new User</h1>
+			<form id = "user-data">
+				<fieldset>
+					<legend>Fill in your data</legend>
+					<div class="input-data">
+						<input type="text" class="firstName" placeholder="First name" required>
+						<input type="text" class="lastName" placeholder="Last name" required>
+						<input type="email" class="email" placeholder="User email" required>
+						<input type="tel" class="phone" placeholder="Phone" required>
+						<input type="password" class="password" placeholder="Password" required>
+						<input type="password" class="reenter-password" placeholder="Re-enter Password">
+						<span class="tosAgreement">
+							<label for="tosAgreement">I agree to the terms and conditions:</label>
+							<input type="checkbox" name="tosAgreement">
+						</span>
+						<input type="submit" class="submit-new-user" value="Submit">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+
+		%%FOOTER_PLACEHOLDER%%
+		
+	</div>
+	<!-- close the #main container of the page  -->
+</body>
+</html>
