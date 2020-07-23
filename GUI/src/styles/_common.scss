@@ -52,7 +52,8 @@ body, html, * {
 			display: grid;
 			grid-template-columns: 1fr 0.75fr 1fr;
 			grid-template-areas: 
-				"dev-reference-links link-to-github social-share-icons"
+				"dev-reference-links dev-reference-links dev-reference-links"
+				"link-to-github social-share-icons social-share-icons"
 				"contact-info contact-info contact-info";
 
 			div {
@@ -66,8 +67,23 @@ body, html, * {
 			}
 
 			.dev-reference-links, .social-share-icons {
+				p {
+					text-align: center;
+					font-family: monospace;
+					font-size: 1.5rem;
+					margin: 0.5rem 0 1rem;
+				}
 				ul {
 					list-style-type: none;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-evenly;
+
+					li {
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+					}
 				}
 			}
 			.dev-reference-links {
@@ -76,15 +92,30 @@ body, html, * {
 
 			.social-share-icons {
 				grid-area: social-share-icons;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
 				
 				.share-icons-list {
-					display: flex;
-					flex-direction: row;
+					width: 100%;
+
+					.share-icon i {
+						font-size: 3rem;;
+					}
 				}
 			}
 
 			.link-to-github {
 				grid-area: link-to-github;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-evenly;
+
+				img {
+					width: 50px;
+				}
 			}
 
 			.contact-info {
