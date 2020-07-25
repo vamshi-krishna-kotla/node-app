@@ -128,7 +128,7 @@ handlers._users.get = function (data, callback) {
 						callback(200, data);
 					}
 					else {
-						callback(404, {'Error': 'Unable to read data'});
+						callback(500, {'Error': 'Unable to read data'});
 					}
 				});
 			}
