@@ -57,6 +57,27 @@ server.httpServer = http.createServer(function (req, res) {
 			'payload': helpers.parseJsonToObject(buffer)
 		};
 
+		// putting default headers to be sent for any network request
+		const defaultResponseHeaders = {
+			// wildcard response header to allow access to any origin
+			"Access-Control-Allow-Origin": "*"
+		};
+
+		/* 
+		before the actual network requests are performed, OPTIONS request is performed for testing CORS access
+		this is called 'pre-flight' request 
+		*/
+		// handling OPTIONS request to return 200 for allowing CORS access
+		if(method == "options") {
+			// setting specific header
+			// Access-Control-Allow-Headers: response header that filters which request headers from the client are accepted
+			res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+			// setting default headers
+			res.writeHead(200, defaultResponseHeaders);
+			res.end();
+			return;
+		}
+
 		// route the request to the handler specified in the router
 		chosenHandler(data, function(statusCode, payload){
 			// use the statusCode returned by handler or use 200
@@ -68,9 +89,11 @@ server.httpServer = http.createServer(function (req, res) {
 			// convert the payload to a string
 			const payloadString = JSON.stringify(payload);
 
-			// return the response
+			// set custom header for returned response
 			res.setHeader('Content-Type', 'application/json');
-			res.writeHead(statusCode);
+			// set the default response headers
+			res.writeHead(statusCode, defaultResponseHeaders);
+			// return the response
 			res.end(payloadString);
 
 			// log the request path
