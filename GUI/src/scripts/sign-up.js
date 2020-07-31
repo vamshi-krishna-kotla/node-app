@@ -1,5 +1,7 @@
 import '../styles/sign-up.scss';
 
+import axios from 'axios';
+
 // get data from the form
 window.onload = function () {
 	document.querySelector('#user-data').addEventListener('submit', function(event) {
@@ -35,11 +37,7 @@ window.onload = function () {
 			if(finalPassword) {
 				payload['password'] = finalPassword;
 				
-				// put a post request to API with the obtained 'payload' object
-				/**
-				 * @todo put a POST to API and get the result
-				 */
-				console.log('POST to the API');
+				createUser(payload);
 			}
 			else {
 				alert('Passwords do not match!');
@@ -56,4 +54,12 @@ window.onload = function () {
 function validatePhone(phone) {
 	// return true if phone is number and of 10 digits; else return false
 	return /^[0-9]{10}$/.test(phone);
+}
+
+async function createUser(payload) {
+	// POST to API with payload
+	var data = await axios.post('http://localhost:3000/users', payload);
+
+	// handle the response
+	console.log(data);
 }
