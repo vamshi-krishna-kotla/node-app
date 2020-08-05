@@ -1,6 +1,6 @@
 import '../styles/sign-up.scss';
 
-import axios from 'axios';
+import { Alert } from '../support';
 
 // get data from the form
 window.onload = function () {
@@ -57,9 +57,36 @@ function validatePhone(phone) {
 }
 
 async function createUser(payload) {
-	// POST to API with payload
-	var data = await axios.post('http://localhost:3000/users', payload);
+	var message = '';
+	try {
+		// POST to API with payload
+		var response = await fetch('http://localhost:3000/users', {
+			method: 'POST',
+			body: JSON.stringify(payload)
+		});
 
-	// handle the response
-	console.log(data);
+		var data = await response.json();
+
+		// handle the response
+		if(response.status == 200) {
+			// if the POST request returns 200 - display a success message to the user
+			// give a link to login for the newly created user - take to sign-in page
+			message = 'New user created successfully';
+		}
+		else if(response.status == 400 || response.status == 500) {
+			// if the response is 400 - display an error message to the user with msg regarding invalid request
+			message = data.Error;
+		}
+		else {
+			// if the response is anything else - display an error message to the user
+			throw 'Error while creating new User! Please try again later!';
+		}
+	}
+	catch(e) {
+		message = (typeof e === 'string') ? e : 'Error: Couldn\'t make a successful HTTP fetch call!';
+	}
+	finally {
+		const a = new Alert(message);
+		a.appendToDOM('.page-content');
+	}
 }
