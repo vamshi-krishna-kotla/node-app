@@ -1,9 +1,11 @@
 import '../styles/sign-up.scss';
 
-import { Alert } from '../support';
+import { Alert, hideHeaderLinks } from '../support';
 
 // get data from the form
 window.onload = function () {
+	hideHeaderLinks('create-check', 'sign-in', 'log-out', 'sign-up');
+
 	document.querySelector('#user-data').addEventListener('submit', function(event) {
 		// stop the form from default submission
 		event.preventDefault();

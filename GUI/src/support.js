@@ -54,3 +54,9 @@ export class Alert {
 		return newDiv;
 	}
 }
+
+export function hideHeaderLinks(...links) {
+	links.forEach(link => {
+		document.querySelector(`#header .menu-list .${link}`).classList.add('hide');
+	})
+}

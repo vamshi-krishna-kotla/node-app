@@ -1,3 +1,7 @@
 import '../styles/sign-in.scss';
 
-console.log('Sign-In page JS loaded!');
+import { hideHeaderLinks } from '../support';
+
+window.onload = function () {
+	hideHeaderLinks('create-check', 'sign-in', 'log-out');
+};
