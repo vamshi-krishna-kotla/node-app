@@ -15,6 +15,40 @@ body, html, * {
 		position: relative;
 	}
 
+	.hide {
+		display: none;
+	}
+
+	.alert {
+		animation: fade-in 0.5s linear;
+		border-radius: 0.5rem;
+		padding: 1rem 2rem;
+		transition: display 1s;
+		margin: 0.5rem auto;
+
+		a {
+			margin: 1rem;
+		}
+
+		&.alert-success {
+			background-color: green;
+		}
+
+		&.alert-fail {
+			background-color: red;
+		}
+
+		&.alert-notify {
+			background-color: yellow;
+		}
+
+		.alert-close {
+			position: absolute;
+			cursor: pointer;
+			right: 0.5rem;
+		}
+	}
+
 	#header {
 		display: flex;
 		background-color: darkgray;
@@ -123,5 +157,40 @@ body, html, * {
 			}
 			
 		}
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@-o-keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-moz-keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }
