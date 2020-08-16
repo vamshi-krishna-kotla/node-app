@@ -56,7 +56,15 @@ export class Alert {
 }
 
 export function hideHeaderLinks(...links) {
+	// remove 'hide' from all header links
+	document.querySelectorAll(`#header .menu-list li`).forEach(link => {
+		link.classList.remove('hide');
+	});
+	// hide given links
 	links.forEach(link => {
-		document.querySelector(`#header .menu-list .${link}`).classList.add('hide');
+		const linkElement = document.querySelector(`#header .menu-list .${link}`);
+		if(linkElement) {
+			linkElement.classList.add('hide');
+		}
 	})
 }
