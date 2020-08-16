@@ -57,7 +57,12 @@ function validatePhone(phone) {
 }
 
 async function createUser(payload) {
-	var message = '';
+	var alertData = {
+		'message': '',
+		'linkText': false,
+		'link': false,
+		'type': 'notify'
+	};
 	try {
 		// POST to API with payload
 		var response = await fetch('http://localhost:3000/users', {
@@ -71,11 +76,19 @@ async function createUser(payload) {
 		if(response.status == 200) {
 			// if the POST request returns 200 - display a success message to the user
 			// give a link to login for the newly created user - take to sign-in page
-			message = 'New user created successfully';
+			alertData = {
+				'message': 'New user created successfully!',
+				'linkText': 'Click to login now!',
+				'link': 'sign-in',
+				'type': 'success'
+			};
 		}
 		else if(response.status == 400 || response.status == 500) {
 			// if the response is 400 - display an error message to the user with msg regarding invalid request
-			message = data.Error;
+			alertData = {
+				'message': data.Error,
+				'type': 'fail'
+			};
 		}
 		else {
 			// if the response is anything else - display an error message to the user
@@ -83,10 +96,13 @@ async function createUser(payload) {
 		}
 	}
 	catch(e) {
-		message = (typeof e === 'string') ? e : 'Error: Couldn\'t make a successful HTTP fetch call!';
+		alertData = {
+			'message': (typeof e === 'string') ? e : 'Error: Couldn\'t make a successful HTTP fetch call!',
+			'type': 'notify'
+		};
 	}
 	finally {
-		const a = new Alert(message);
-		a.appendToDOM('.page-content');
+		const a = new Alert(alertData);
+		a.appendAlertToDOM('.page-content');
 	}
 }
