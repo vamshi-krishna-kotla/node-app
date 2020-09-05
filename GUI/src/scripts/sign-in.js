@@ -44,7 +44,8 @@ async function signInUser(payload) {
 			alertData = {
 				'message': 'Signed In successfully! Session expires in 1 hour!!',
 				'linkText': '<link to dashborad>!',
-				'link': 'dashboard',
+				// sending number of the user as querystring parameter
+				'link': `dashboard?user=${data.phone}`,
 				'type': 'success'
 			};
 
@@ -68,6 +69,7 @@ async function signInUser(payload) {
 			'message': (typeof e === 'string') ? e : 'Error: Couldn\'t make a successful HTTP fetch call!',
 			'type': 'notify'
 		};
+		console.error(e);
 	}
 	finally {
 		const a = new Alert(alertData);
@@ -77,8 +79,13 @@ async function signInUser(payload) {
 
 function handleResponse(responseData) {
 	
-	console.log(responseData.expires - new Date());
-	/**
-	 * @todo handle the data to set required variables for a signed in user
-	 */
+	// get session data of logged in users
+	var appUserData = JSON.parse(sessionStorage.getItem('appUserData')) || {};
+
+	// set data of current logged in user with updated token
+	appUserData[responseData.phone] = {
+		'tokenId': responseData.id,
+		'expires': responseData.expires
+	}
+	sessionStorage.setItem('appUserData', JSON.stringify(appUserData));
 }
