@@ -72,7 +72,7 @@ server.httpServer.get('/:route', function (req, res) {
 });
 
 // currently available routes for the GUI
-server.availableRoutes = ['sign-in', 'sign-up'];
+server.availableRoutes = ['sign-in', 'sign-up', 'dashboard'];
 
 /**
  * Initialise the server
