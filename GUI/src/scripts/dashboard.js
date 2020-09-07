@@ -18,8 +18,10 @@ window.onload = function () {
 
 	// check whether the user is logged in
 	if(loginData && loginData[currentUser]) {
+		let userData = Object.assign(loginData[currentUser], {'phone': currentUser});
 		// user has signed in
-		showUserChecks(loginData[currentUser]);
+		showUserInfo(userData);
+		showUserChecks(userData);
 	}
 	else {
 		// user data is not present in sessionStorage, user needs to sign-in
@@ -36,8 +38,6 @@ window.onload = function () {
 };
 
 async function showUserChecks(userData) {
-	hideHeaderLinks('sign-in', 'sign-up');
-
 	// make call to API to retrive user checks
 	try {
 		var response = await fetch(`http://localhost:3000/checks?id=${userData.tokenId}`, {
@@ -62,4 +62,57 @@ async function showUserChecks(userData) {
 	}
 	catch(e) {
 	}
+}
+
+async function showUserInfo(userData) {
+	try{
+		var response = await fetch(`http://localhost:3000/users?phone=${userData.phone}`, {
+			method: 'GET',
+			headers: {
+				'token': userData.tokenId
+			}
+		});
+		const data = await response.json();
+		if(response.status === 200) {
+			// user details found: populate DOM with details
+			hideHeaderLinks('sign-in', 'sign-up');
+			fillUserDetails(data);
+		}
+		else {
+			// user details not found; alert the user
+			hideHeaderLinks('log-out', 'create-check', 'sign-up');
+			var alertData = {
+				'message': '',
+				'linkText': 'Please sign-in again!',
+				'link': 'sign-in',
+				'type': ''
+			};
+			if(response.status === 403) {
+				// user token is invalid
+				Object.assign(alertData, {
+					'message': data.Error,
+					'type': 'notify'
+				});
+			}
+			else {
+				// Error fetching details, try signing in again
+				Object.assign(alertData, {
+					'message': `${response.status}: ${data.Error}`,
+					'type': 'fail'
+				});
+			}
+			const a = new Alert(alertData);
+			a.appendAlertToDOM('.user-details');
+		}
+	}
+	catch(e) {
+		console.error(e);
+	}
+}
+
+function fillUserDetails(userDetails) {
+	console.log(userDetails);
+	/**
+	 * @todo fill in details of user
+	 */
 }
