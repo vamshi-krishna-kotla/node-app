@@ -2,7 +2,11 @@ import '../styles/sign-in.scss';
 
 import { Alert,hideHeaderLinks } from '../support';
 
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function () {
+	signInPageInit();
+});
+
+function signInPageInit() {
 	hideHeaderLinks('create-check', 'sign-in', 'log-out');
 
 	document.querySelector('#login-form').addEventListener('submit', function(event) {
