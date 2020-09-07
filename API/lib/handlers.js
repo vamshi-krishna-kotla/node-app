@@ -679,7 +679,7 @@ handlers._checks.get = function (data, callback) {
 		});
 	}
 	else {
-		callback(400, {'Error': 'Missing required field(tokenId)'});
+		callback(400, {'Error': 'Missing required field(checkId)'});
 	}
 };
 
