@@ -2,7 +2,11 @@ import '../styles/dashboard.scss';
 
 import { Alert, hideHeaderLinks } from '../support';
 
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function(){
+	dashboardInit();
+});
+
+function dashboardInit() {
 	hideHeaderLinks('sign-in', 'sign-up', 'create-check', 'log-out');
 
 	// get sessioStorage data
