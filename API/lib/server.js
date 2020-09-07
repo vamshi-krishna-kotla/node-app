@@ -71,7 +71,7 @@ server.httpServer = http.createServer(function (req, res) {
 		if(method == "options") {
 			// setting specific header
 			// Access-Control-Allow-Headers: response header that filters which request headers from the client are accepted
-			res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+			res.setHeader("Access-Control-Allow-Headers", "*");
 			// setting default headers
 			res.writeHead(200, defaultResponseHeaders);
 			res.end();
