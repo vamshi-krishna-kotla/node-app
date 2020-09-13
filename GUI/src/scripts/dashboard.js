@@ -94,7 +94,7 @@ async function getUserInfo(userData) {
 				});
 			}
 			const a = new Alert(alertData);
-			a.appendAlertToDOM('.user-details');
+			a.appendAlertToDOM('.page-content');
 		}
 	}
 	catch(e) {
@@ -133,8 +133,15 @@ function fillUserDetails(userDetails) {
  * Notify user if no checks are present
  */
 async function showUserChecks(userDetails) {
-	console.log(userDetails);
-	/**
-	 * @todo do as description
-	 */
+	if(userDetails.checks && userDetails.checks.length > 0) {
+		// there are checks present for a user
+		/**
+		 * @todo fetch each check details and fill the user checks table
+		 */
+	}
+	else {
+		// no checks currently
+		document.querySelector('#user-check-details table')
+			.insertAdjacentHTML('beforeend','<tr><td class="no-check-row" colspan=5>No checks!</td></tr>');
+	}
 }

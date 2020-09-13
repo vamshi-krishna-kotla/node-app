@@ -6,4 +6,30 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	.user-details {
+		table {
+			margin: 1rem auto;
+		}
+		#user-personal-details {
+			display: block;
+		}
+		#user-check-details{
+			display: block;
+
+			tbody {
+				tr:nth-child(odd) {
+					background-color: grey;
+				}
+				tr:nth-child(even) {
+					background-color: white;
+				}
+			}
+
+			.no-check-row {
+				text-align: center;
+				background-color: yellowgreen;
+			}
+		}
+	}
 }
