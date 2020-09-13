@@ -17,15 +17,18 @@ function dashboardInit() {
 	var currentUser = queryString.find( q => {
 		return q.indexOf('user') > -1;
 	});
-	currentUser = currentUser.slice(currentUser.indexOf('=') + 1, currentUser.length);
-	document.getElementById('title').innerHTML = `${currentUser} Dashboard!`;
+
+	// get currentUser data from querystring if a valid query parameter is given
+	if(currentUser) {
+		currentUser = currentUser.slice(currentUser.indexOf('=') + 1, currentUser.length);
+		document.getElementById('title').innerHTML = `${currentUser} Dashboard!`;
+	}
 
 	// check whether the user is logged in
-	if(loginData && loginData[currentUser]) {
+	if(currentUser && loginData && loginData[currentUser]) {
 		let userData = Object.assign(loginData[currentUser], {'phone': currentUser});
 		// user has signed in
-		showUserInfo(userData);
-		showUserChecks(userData);
+		getUserInfo(userData);
 	}
 	else {
 		// user data is not present in sessionStorage, user needs to sign-in
@@ -41,34 +44,13 @@ function dashboardInit() {
 	}
 };
 
-async function showUserChecks(userData) {
-	// make call to API to retrive user checks
-	try {
-		var response = await fetch(`http://localhost:3000/checks?id=${userData.tokenId}`, {
-			method: 'GET'
-		});
-		if(response.status === 200) {
-			/**
-			 * @todo succesful http call: populate the DOM with userchecks
-			 */
-			var responseData = await response.json();
-		}
-		else if(response.status === 404) {
-			/**
-			 * @todo no checks found: prompt the user to create checks
-			 */
-		}
-		else if(response.status === 400 || response.status === 403) {
-			/**
-			 * @todo error with the request: show error to the user
-			 */
-		}
-	}
-	catch(e) {
-	}
-}
-
-async function showUserInfo(userData) {
+/**
+ * 
+ * @param {Object} userData : data of a user as present in sessionStorage
+ * Make a http GET call to fetch the details of a user
+ * Call in functions to display user data
+ */
+async function getUserInfo(userData) {
 	try{
 		var response = await fetch(`http://localhost:3000/users?phone=${userData.phone}`, {
 			method: 'GET',
@@ -81,6 +63,9 @@ async function showUserInfo(userData) {
 			// user details found: populate DOM with details
 			hideHeaderLinks('sign-in', 'sign-up');
 			fillUserDetails(data);
+
+			// show pre-registered user checks
+			showUserChecks(data);
 		}
 		else {
 			// user details not found; alert the user
@@ -114,9 +99,39 @@ async function showUserInfo(userData) {
 	}
 }
 
+/**
+ * 
+ * @param {Object} userDetails : user data sent by a successful http request
+ * Populate the personal details of the user onto the DOM
+ */
 function fillUserDetails(userDetails) {
+	// show user detials table
+	document.querySelector('.user-details').classList.remove('hide');
+
+	/**
+	 * fill in personal details of user
+	 */
+	const userInfo = {
+		'firstName': userDetails.firstName,
+		'lastName': userDetails.lastName,
+		'email': userDetails.email,
+		'phone': userDetails.phone,
+	};
+	var key;
+	for( key in userInfo ) {
+		document.querySelector(`.user-details input.user-${key}`).value = userDetails[key];
+	}
+}
+
+/**
+ * 
+ * @param {Object} userDetails : user data sent by a successful http request
+ * Filter for any checks present currently and display
+ * Notify user if no checks are present
+ */
+async function showUserChecks(userDetails) {
 	console.log(userDetails);
 	/**
-	 * @todo fill in details of user
+	 * @todo do as description
 	 */
 }
