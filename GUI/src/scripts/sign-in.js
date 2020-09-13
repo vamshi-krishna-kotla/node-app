@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	signInPageInit();
 });
 
+/**
+ * init method for the page
+ */
 function signInPageInit() {
 	hideHeaderLinks('create-check', 'sign-in', 'log-out');
 
@@ -25,6 +28,11 @@ function signInPageInit() {
 	});
 };
 
+/**
+ * 
+ * @param {Object} payload : required data to log-in an existing user
+ * Log-in a user with http POST request to create a new token
+ */
 async function signInUser(payload) {
 	var alertData = {
 		'message': '',
@@ -81,6 +89,11 @@ async function signInUser(payload) {
 	}
 }
 
+/**
+ * 
+ * @param {Object} responseData : response data received after successfully logging in a user
+ * Set the token value to be used for the session
+ */
 function handleResponse(responseData) {
 	
 	// get session data of logged in users

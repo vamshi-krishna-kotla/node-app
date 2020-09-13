@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	dashboardInit();
 });
 
+/**
+ * init method for the page
+ */
 function dashboardInit() {
 	hideHeaderLinks('sign-in', 'sign-up', 'create-check', 'log-out');
 

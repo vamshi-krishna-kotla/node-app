@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	signUpPageInit();
 });
 
+/**
+ * init method for the page
+ */
 function signUpPageInit() {
 	hideHeaderLinks('create-check', 'sign-in', 'log-out', 'sign-up');
 
@@ -57,11 +60,22 @@ function signUpPageInit() {
 
 };
 
+/**
+ * 
+ * @param {String} phone : phone number of the user, to be validated
+ * Return boolean value of validation
+ * Phone number should be a 10 digit numeric string
+ */
 function validatePhone(phone) {
 	// return true if phone is number and of 10 digits; else return false
 	return /^[0-9]{10}$/.test(phone);
 }
 
+/**
+ * 
+ * @param {Object} payload : required data to create a new user
+ * Create a new user with http POST request to the API
+ */
 async function createUser(payload) {
 	var alertData = {
 		'message': '',
