@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
  * init method for the page
  */
 function signInPageInit() {
-	hideHeaderLinks('create-check', 'sign-in', 'log-out');
+	hideHeaderLinks('sign-in', 'log-out');
 
 	document.querySelector('#login-form').addEventListener('submit', function(event) {
 		// stop the form from default submission

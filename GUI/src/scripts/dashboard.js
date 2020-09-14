@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function(){
  * init method for the page
  */
 function dashboardInit() {
-	hideHeaderLinks('sign-in', 'sign-up', 'create-check', 'log-out');
+	hideHeaderLinks('sign-in', 'sign-up', 'log-out');
 
 	// get sessioStorage data
 	const loginData = JSON.parse(sessionStorage.getItem('appUserData'));
@@ -72,7 +72,7 @@ async function getUserInfo(userData) {
 		}
 		else {
 			// user details not found; alert the user
-			hideHeaderLinks('log-out', 'create-check', 'sign-up');
+			hideHeaderLinks('log-out', 'sign-up');
 			var alertData = {
 				'message': '',
 				'linkText': 'Please sign-in again!',
