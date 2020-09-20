@@ -120,16 +120,18 @@ function fillUserDetails(userDetails, tokenId) {
 		document.querySelector(`.user-details input.user-${key}`).value = userDetails[key];
 	}
 
-	// make the user form editable to update details
-	document.querySelector('.trigger-edit-user-details').addEventListener('click', function(){
-		// hoist required elements
-		const fName =  document.querySelector('.user-firstName');
-		const lName = document.querySelector('.user-lastName');
-		const email = document.querySelector('.user-email');
-		const updateButton = document.querySelector('.update-user-details');
-		const newPasswordRow = document.querySelector('.new-password-row');
-		const updatedPassword = document.querySelector('.user-updated-password');
+	// hoist required elements
+	const fName =  document.querySelector('.user-firstName');
+	const lName = document.querySelector('.user-lastName');
+	const email = document.querySelector('.user-email');
+	const updateButton = document.querySelector('.update-user-details');
+	const newPasswordRow = document.querySelector('.new-password-row');
+	const updatedPassword = document.querySelector('.user-updated-password');
+	const closeEdit = document.querySelector('.close-edit');
+	const triggerEdit = document.querySelector('.trigger-edit-user-details');
 
+	// make the user form editable to update details
+	triggerEdit.addEventListener('click', function(){
 		// make the first name, last name and email fields editable
 		[fName, lName, email].forEach(element => {
 			element.disabled = false;
@@ -149,6 +151,34 @@ function fillUserDetails(userDetails, tokenId) {
 				'password': updatedPassword.value,
 			}, userDetails.phone, tokenId);
 		};
+
+		// show "close edit" button
+		closeEdit.classList.remove('hide');
+
+		// hide trigger edit button
+		triggerEdit.classList.add('hide');
+
+	});
+
+	// close edit options when clicked on "close edit" button
+	closeEdit.addEventListener('click', () => {
+		// hide update edit button
+		updateButton.classList.add('hide');
+
+		// show edit button
+		triggerEdit.classList.remove('hide');
+		
+		// hide the password field
+		newPasswordRow.classList.add('hide');
+
+		// hide the close edit button
+		closeEdit.classList.add('hide');
+
+		// make the first name, last name and email fields un-editable
+		[fName, lName, email].forEach(element => {
+			element.disabled = true;
+			element.classList.remove('editable');
+		});
 	});
 }
 
