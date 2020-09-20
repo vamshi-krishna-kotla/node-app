@@ -59,8 +59,15 @@ server.httpServer = http.createServer(function (req, res) {
 
 		// putting default headers to be sent for any network request
 		const defaultResponseHeaders = {
+			// Access-Control-Allow-Origin: response header allow which domain to communicate with
 			// wildcard response header to allow access to any origin
-			"Access-Control-Allow-Origin": "*"
+			"Access-Control-Allow-Origin": "*",
+			// Access-Control-Allow-Headers: response header that filters which REQUEST HEADERS from the client are accepted
+			// wildcard allows all headers
+			"Access-Control-Allow-Headers": "*",
+			// Access-Control-Allow-Headers: response header that filters which METHODS from the client are accepted
+			// wildcard allows all methods
+			"Access-Control-Allow-Methods": "*"
 		};
 
 		/* 
@@ -69,9 +76,6 @@ server.httpServer = http.createServer(function (req, res) {
 		*/
 		// handling OPTIONS request to return 200 for allowing CORS access
 		if(method == "options") {
-			// setting specific header
-			// Access-Control-Allow-Headers: response header that filters which request headers from the client are accepted
-			res.setHeader("Access-Control-Allow-Headers", "*");
 			// setting default headers
 			res.writeHead(200, defaultResponseHeaders);
 			res.end();
