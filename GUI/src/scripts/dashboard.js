@@ -65,10 +65,10 @@ async function getUserInfo(userData) {
 		if(response.status === 200) {
 			// user details found: populate DOM with details
 			hideHeaderLinks('sign-in', 'sign-up');
-			fillUserDetails(data);
+			fillUserDetails(data, userData.tokenId);
 
 			// show pre-registered user checks
-			showUserChecks(data);
+			showUserChecks(data, userData.tokenId);
 		}
 		else {
 			// user details not found; alert the user
@@ -107,23 +107,49 @@ async function getUserInfo(userData) {
  * @param {Object} userDetails : user data sent by a successful http request
  * Populate the personal details of the user onto the DOM
  */
-function fillUserDetails(userDetails) {
+function fillUserDetails(userDetails, tokenId) {
 	// show user detials table
 	document.querySelector('.user-details').classList.remove('hide');
 
 	/**
 	 * fill in personal details of user
 	 */
-	const userInfo = {
-		'firstName': userDetails.firstName,
-		'lastName': userDetails.lastName,
-		'email': userDetails.email,
-		'phone': userDetails.phone,
-	};
+	delete userDetails.tosAgreement;
 	var key;
-	for( key in userInfo ) {
+	for( key in userDetails ) {
 		document.querySelector(`.user-details input.user-${key}`).value = userDetails[key];
 	}
+
+	// make the user form editable to update details
+	document.querySelector('.trigger-edit-user-details').addEventListener('click', function(){
+		// hoist required elements
+		const fName =  document.querySelector('.user-firstName');
+		const lName = document.querySelector('.user-lastName');
+		const email = document.querySelector('.user-email');
+		const updateButton = document.querySelector('.update-user-details');
+		const newPasswordRow = document.querySelector('.new-password-row');
+		const updatedPassword = document.querySelector('.user-updated-password');
+
+		// make the first name, last name and email fields editable
+		[fName, lName, email].forEach(element => {
+			element.disabled = false;
+			element.classList.add('editable');
+		});
+
+		// show the password field
+		newPasswordRow.classList.remove('hide');
+
+		// show the update user details button
+		updateButton.classList.remove('hide');
+		updateButton.onclick = () => {
+			updateUserDetails({
+				'firstName': fName.value,
+				'lastName': lName.value,
+				'email': email.value,
+				'password': updatedPassword.value,
+			}, userDetails.phone, tokenId);
+		};
+	});
 }
 
 /**
@@ -132,7 +158,7 @@ function fillUserDetails(userDetails) {
  * Filter for any checks present currently and display
  * Notify user if no checks are present
  */
-async function showUserChecks(userDetails) {
+async function showUserChecks(userDetails, tokenId) {
 	if(userDetails.checks && userDetails.checks.length > 0) {
 		// there are checks present for a user
 		/**
@@ -143,5 +169,60 @@ async function showUserChecks(userDetails) {
 		// no checks currently
 		document.querySelector('#user-check-details table')
 			.insertAdjacentHTML('beforeend','<tr><td class="no-check-row" colspan=5>No checks!</td></tr>');
+	}
+}
+
+/**
+ * 
+ * @param {Object} payload : data to be sent to the API to update user details
+ * @param {String} userPhone : phone number of user to identify a user, sent as querystring param
+ * @param {String} userTokenId : user login token ID sent as header to the API
+ * 
+ * Make a PUT request to update the user details with given data
+ */
+async function updateUserDetails(payload, userPhone, userTokenId) {
+	// remove empty values from the payload
+	var key;
+	for(key in payload) {
+		if(!payload[key]) {
+			delete payload[key];
+		}
+	}
+
+	// send PUT request to update user details
+	try {
+		var response = await fetch(`http://localhost:3000/users?phone=${userPhone}`, {
+			method: 'PUT',
+			// need to send stringified data as payload!
+			body: JSON.stringify(payload),
+			headers: {
+				'token': userTokenId
+			}
+		});
+
+		var alertData = {
+			'message': '',
+			'linkText': '',
+			'link': '',
+			'type': ''
+		};
+
+		if(response.status === 200) {
+			// details updated successfully
+			// alert the user with a success message
+			alertData.message = "Details updated successfully!";
+			alertData.type = "success";
+		}
+		else {
+			// alert the user based on the response
+			const data = await response.json();
+			alertData.message = data.Error || "Error while updating";
+			alertData.type = "fail";
+		}
+		const alert = new Alert(alertData);
+		alert.appendAlertToDOM('#user-personal-details');
+
+	} catch (error) {
+		console.error(error);
 	}
 }
