@@ -13,6 +13,12 @@
 		}
 		#user-personal-details {
 			display: block;
+
+			input {
+				&.user-phone, &.user-tosAgreement {
+					cursor: not-allowed;
+				}
+			}
 		}
 		#user-check-details{
 			display: block;
