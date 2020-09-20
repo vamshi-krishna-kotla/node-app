@@ -8,33 +8,110 @@
 	justify-content: center;
 
 	.user-details {
+		width: 100%;
+
 		table {
 			margin: 1rem auto;
 		}
 		#user-personal-details {
 			display: block;
+			margin: auto;
+			width: 50%;
 
-			input {
-				&.user-phone, &.user-tosAgreement {
-					cursor: not-allowed;
+			table {
+				border-collapse: collapse;
+				td {
+					border-bottom: 1px solid black;
+					padding: 0.25rem 0;
+					position: relative;
+				}
+
+				input {
+					&[type=text] {
+						border: 1px solid black;
+						border-radius: 5px;
+						padding: 0.5rem;
+					}
+	
+					&.user-phone, &.user-tosAgreement {
+						cursor: not-allowed;
+					}
+
+					+span {
+						display: none;
+					}
+				}
+
+				.user-phone, .user-tosAgreement, .editable {
+					+span {
+						display: inline-flex;
+						flex-direction: column;
+						justify-content: center;
+						position: absolute;
+						font-size: 1rem;
+						font-family: monospace;
+						margin: 0 0 0 1rem;
+						width: 100%;
+						height: 80%;
+						visibility: hidden;
+					}
+				}
+
+				.user-phone, .user-tosAgreement {
+					&:hover {
+						+span {
+							visibility: visible;
+						}
+					}
+				}
+
+				.editable {
+					&:focus {
+						+span {
+							visibility: visible;
+						}
+					}
 				}
 			}
 		}
 		#user-check-details{
 			display: block;
+			margin: auto;
+			width: 50%;
 
-			tbody {
-				tr:nth-child(odd) {
-					background-color: grey;
-				}
-				tr:nth-child(even) {
-					background-color: white;
-				}
-			}
+			table {
+				width: 100%;
 
-			.no-check-row {
-				text-align: center;
-				background-color: yellowgreen;
+				thead {
+					tr {
+						th {
+							border-bottom: 1px solid black;
+							margin: 0.025rem;
+							padding: 0.15rem;
+						}
+					}
+				}
+	
+				tbody {
+					tr:nth-child(odd) {
+						background-color: grey;
+					}
+					tr:nth-child(even) {
+						background-color: white;
+					}
+	
+					tr {
+						td {
+							margin: 0.025rem;
+							border: 1px solid black;
+						}
+					}
+				}
+	
+				.no-check-row {
+					text-align: center;
+					background-color: yellowgreen;
+				}
 			}
 		}
 	}

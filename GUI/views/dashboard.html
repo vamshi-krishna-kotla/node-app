@@ -21,32 +21,51 @@
 						<tbody>
 							<tr>
 								<td>Phone:</td>
-								<td><input title="Cannot edit this field" class="user-phone" type="text" name="user-phone" disabled/></td>
+								<td>
+									<input class="user-phone" type="text" name="user-phone" disabled/>
+									<span>Cannot edit this field</span>
+								</td>
 							</tr>
 							<tr>
 								<td>First Name:</td>
-								<td><input class="user-firstName" type="text" name="user-firstName" disabled placeholder="Previous value is stored if empty" /></td>
+								<td>
+									<input class="user-firstName" type="text" name="user-firstName" disabled title/>
+									<span>Previous value is stored if left empty</span>
+								</td>
 							</tr>
 							<tr>
 								<td>Last Name:</td>
-								<td><input class="user-lastName" type="text" name="user-lastName" disabled placeholder="Previous value is stored if empty" /></td>
+								<td>
+									<input class="user-lastName" type="text" name="user-lastName" disabled title/>
+									<span>Previous value is stored if left empty</span>
+								</td>
 							</tr>
 							<tr>
 								<td>Email:</td>
-								<td><input class="user-email" type="text" name="user-email" disabled placeholder="Previous value is stored if empty" /></td>
+								<td>
+									<input class="user-email" type="text" name="user-email" disabled title/>
+									<span>Previous value is stored if left empty</span>
+								</td>
 							</tr>
 							<tr class="new-password-row hide">
 								<td>Password:</td>
-								<td><input class="user-updated-password" type="text" name="user-updated-password" placeholder="Previous value is stored if empty" /></td>
+								<td>
+									<input class="user-updated-password editable" type="text" name="user-updated-password" placeholder="Enter new Password" />
+									<span>Previous value is stored if left empty</span>
+								</td>
 							</tr>
 							<tr>
-								<td>I agree to the <a href="#">terms and conditions</a>:</td>
-								<td><input title="Cannot edit this field" type="checkbox" class="user-tosAgreement" checked disabled></td>
+								<td>Agreed to <a href="#">terms and conditions</a>:</td>
+								<td>
+									<input type="checkbox" class="user-tosAgreement" checked disabled>
+									<span>Cannot edit this field</span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
 					<input class="trigger-edit-user-details" type="button" value="Edit Details">
 					<input class="update-user-details hide" type="button" value="Update Details">
+					<input class="close-edit hide" type="button" value="Close">
 				</div>
 				<div id="user-check-details">
 					<table>
