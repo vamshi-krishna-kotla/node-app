@@ -105,4 +105,9 @@ function handleResponse(responseData) {
 		'expires': responseData.expires
 	}
 	sessionStorage.setItem('appUserData', JSON.stringify(appUserData));
+
+	// redirect the user to dashboard after 6 seconds
+	setTimeout(function() {
+		window.location = (`http://${document.location.host}/dashboard?user=${responseData.phone}`);
+	}, 6000);
 }
