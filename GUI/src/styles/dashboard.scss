@@ -73,13 +73,48 @@
 					}
 				}
 			}
+
+			input {
+				border: none;
+				cursor: pointer;
+				text-align: center;
+				border-radius: 0.25rem;
+				padding: 0.5rem;
+				transition-duration: 0.5s;
+				-webkit-transition-duration: 0.5s;
+				-o-transition-duration: 0.5s;
+				-moz-transition-duration: 0.5s;
+
+				&:active {
+					transform: translateY(4px);
+					box-shadow: 2px 4px gray;
+				}
+
+				&.trigger-edit-user-details {
+					background-color: orange;
+					color: black;
+				}
+				&.update-user-details {
+					background-color: aqua;
+					color: black;
+				}
+				&.close-edit {
+					background-color: whitesmoke;
+					color: black;
+					border: 1px solid gray;
+				}
+			}
 		}
 		#user-check-details{
-			display: block;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			margin: auto;
-			width: 50%;
+			width: 75%;
 
-			table {
+			table#current-checks {
+				padding: 2rem 0;
+				border-bottom: 1px solid gray;
 				width: 100%;
 
 				thead {
@@ -111,6 +146,48 @@
 				.no-check-row {
 					text-align: center;
 					background-color: yellowgreen;
+				}
+			}
+
+			#new-check-form {
+				display: flex;
+				position: relative;
+				padding: 2rem 0;
+
+				fieldset {
+					border-radius: 0.35rem;
+					margin: 1rem;
+					padding: 1rem;
+				}
+				
+				.submit-check-container {
+					display: block;
+					width: 100%;
+					position: absolute;
+					bottom: 0;
+
+					input[type=submit] {
+						display: block;
+						margin: auto;
+						background-color: mediumblue;
+						cursor: pointer;
+						text-align: center;
+						border-radius: 0.25rem;
+						padding: 0.5rem;
+						outline: none;
+						color: white;
+						transition-duration: 0.4s;
+						border: none;
+						-o-transition-duration: 0.4s;
+						-webkit-transition-duration: 0.4s;
+						-moz-transition-duration: 0.4s;
+
+						&:active {
+							background-color: navy;
+							box-shadow: 2px 4px gray;
+							transform: translateY(4px);
+						}
+					}
 				}
 			}
 		}

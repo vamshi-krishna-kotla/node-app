@@ -68,7 +68,7 @@
 					<input class="close-edit hide" type="button" value="Close">
 				</div>
 				<div id="user-check-details">
-					<table>
+					<table id="current-checks">
 						<thead>
 							<tr>
 								<th>Protocol</th>
@@ -79,7 +79,50 @@
 							</tr>
 						</thead>
 					</table>
-					<input type="button" value="Create New Check">
+					<form id="new-check-form">
+						<fieldset>
+							<legend>Protocol</legend>
+							<select name="protocol" id="new-check-protocol">
+								<option value="http">http</option>
+								<option value="https">https</option>
+							</select>
+						</fieldset>
+						<fieldset>
+							<legend>URL</legend>
+							<input type="url" name="url" id="new-check-url" required>
+						</fieldset>
+						<fieldset>
+							<legend>Method</legend>
+							<select name="method" id="new-check-method">
+								<option value="GET">GET</option>
+								<option value="POST">POST</option>
+								<option value="PUT">PUT</option>
+								<option value="DELETE">DELETE</option>
+							</select>
+						</fieldset>
+						<fieldset>
+							<legend>Success Codes</legend>
+							<label for="200"><input type="checkbox" name="200">200</label>
+							<label for="301"><input type="checkbox" name="301">301</label>
+							<label for="400"><input type="checkbox" name="400">400</label>
+							<label for="401"><input type="checkbox" name="401">401</label>
+							<label for="404"><input type="checkbox" name="404">404</label>
+							<label for="500"><input type="checkbox" name="500">500</label>
+						</fieldset>
+						<fieldset>
+							<legend>Timeout Seconds</legend>
+							<select name="timeoutSec" id="new-check-timeoutSec">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+						</fieldset>
+						<div class="submit-check-container">
+							<input type="submit" value="Create New Check">
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

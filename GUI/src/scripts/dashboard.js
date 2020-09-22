@@ -197,7 +197,7 @@ async function showUserChecks(userDetails, tokenId) {
 	}
 	else {
 		// no checks currently
-		document.querySelector('#user-check-details table')
+		document.querySelector('#user-check-details table#current-checks')
 			.insertAdjacentHTML('beforeend','<tr><td class="no-check-row" colspan=5>No checks!</td></tr>');
 	}
 }
