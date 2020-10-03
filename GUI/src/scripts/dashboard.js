@@ -195,6 +195,8 @@ function showUserChecks(userDetails, tokenId) {
 		createNewCheck(tokenId);
 	});
 
+	const tableBody = document.querySelector('#user-check-details table#current-checks tbody');
+
 	if(userDetails.checks && userDetails.checks.length > 0) {
 		// there are checks present for a user
 		userDetails.checks.forEach(async check => {
@@ -209,16 +211,22 @@ function showUserChecks(userDetails, tokenId) {
 
 			if(response.status == 200) {
 				// show check to the user
-				document.querySelector('#user-check-details table#current-checks tbody')
-					.insertAdjacentHTML('beforeend',
-					`<tr>
-						<td>${data.id}</td>
-						<td>${data.protocol}</td>
-						<td>${data.url}</td>
-						<td>${data.method}</td>
-						<td>${data.successCodes}</td>
-						<td>${data.timeoutSeconds}</td>
-					</tr>`);
+				var newCheckRow = document.createElement('tr');
+				newCheckRow.innerHTML = 
+				`<td>${data.id}</td>
+				<td>${data.protocol}</td>
+				<td>${data.url}</td>
+				<td>${data.method}</td>
+				<td>${data.successCodes}</td>
+				<td>${data.timeoutSeconds}</td>`;
+
+				newCheckRow.addEventListener('click', function(){
+					// expand to view/edit/delete check
+					expandCheck(newCheckRow, tokenId);
+				});
+
+				tableBody
+					.appendChild(newCheckRow);
 			}
 			else {
 				const newAlert = new Alert({
@@ -231,8 +239,8 @@ function showUserChecks(userDetails, tokenId) {
 	}
 	else {
 		// no checks currently
-		document.querySelector('#user-check-details table#current-checks')
-			.insertAdjacentHTML('beforeend','<tr><td class="no-check-row" colspan=5>No checks!</td></tr>');
+		tableBody
+			.insertAdjacentHTML('beforeend','<tr class="no-check-row"><td colspan=6>No checks!</td></tr>');
 	}
 }
 
@@ -332,23 +340,35 @@ async function createNewCheck(tokenId) {
 
 			if(response.status == 200) {
 				// fetched successful response from create check method
+				var newCheckRow = document.createElement('tr');
+				newCheckRow.innerHTML = 
+				`<td>${data.id}</td>
+				<td>${data.protocol}</td>
+				<td>${data.url}</td>
+				<td>${data.method}</td>
+				<td>${data.successCodes}</td>
+				<td>${data.timeoutSeconds}</td>`;
+
+				// add the new check to current-checks table
+				newCheckRow.addEventListener('click', function(){
+					// expand to view/edit/delete check
+					expandCheck(newCheckRow, tokenId);
+				});
 				document.querySelector('#user-check-details table#current-checks tbody')
-					.insertAdjacentHTML('beforeend',
-					`<tr>
-						<td>${data.id}</td>
-						<td>${data.protocol}</td>
-						<td>${data.url}</td>
-						<td>${data.method}</td>
-						<td>${data.successCodes}</td>
-						<td>${data.timeoutSeconds}</td>
-					</tr>`);
+					.appendChild(newCheckRow);
+
+				// remove the 'no-check-row' if new row is added
+				var noCheckRow = document.querySelector('.no-check-row');
+				if(noCheckRow) {
+					noCheckRow.remove();
+				}
 			}
 			else {
 				const newAlert = new Alert({
 					'message': data.Error,
 					'type': 'notify'
 				});
-				newAlert.appendAlertToDOM('#user-check-details');
+				newAlert.appendAlertToDOM('#check-operation-update');
 			}
 		} catch (error) {
 			console.error(error);
@@ -361,4 +381,119 @@ async function createNewCheck(tokenId) {
 		});
 		newAlert.appendAlertToDOM('#user-check-details');
 	}
+}
+
+/**
+ * 
+ * @param {Node} row : the row element which is clicked
+ * @param {*} tokenId : signed-in user login Id
+ * 
+ * Expand the clicked check to view, edit and delete that check
+ * 
+ * @todo expand modal with check details and button clicks
+ */
+function expandCheck(row, tokenId) {
+	var popUp = document.querySelector('.pop-up');
+	popUp.addEventListener('click', function(event) {
+		if(event.target == popUp) {
+			if(popUp.firstChild) {
+				popUp.removeChild(popUp.firstChild);
+			}
+			popUp.classList.add('hide');
+		}
+	});
+
+	var popUpDivContent = document.createElement('div');
+
+	// add delete option to the modal
+	var deleteCheckButton = document.createElement('button');
+	deleteCheckButton.innerHTML = "Delete";
+	deleteCheckButton.addEventListener('click', function() {
+		deleteCheck(row, tokenId);
+		if(popUp.firstChild) {
+			popUp.removeChild(popUp.firstChild);
+		}
+		popUp.classList.add('hide');
+	});
+	popUpDivContent.appendChild(deleteCheckButton);
+
+	// add update option to the modal
+	var updateCheckButton = document.createElement('button');
+	updateCheckButton.innerHTML = "Update";
+	updateCheckButton.addEventListener('click', function() {
+		updateCheck(row, tokenId);
+		if(popUp.firstChild) {
+			popUp.removeChild(popUp.firstChild);
+		}
+		popUp.classList.add('hide');
+	});
+	popUpDivContent.appendChild(updateCheckButton);
+
+	// attach check data to modal
+	popUp.appendChild(popUpDivContent);
+	
+	popUp.classList.remove('hide');
+
+}
+
+/**
+ * 
+ * @param {Node} row : the row element which is clicked
+ * @param {*} tokenId : signed-in user login Id
+ * 
+ * Delete the current check and remove the row from DOM
+ */
+async function deleteCheck(row, tokenId) {
+	var checkId = row.querySelectorAll('td')[0].innerHTML;
+	const tableBody = row.parentElement;
+	try {
+		var response = await fetch(`http://localhost:3000/checks?id=${checkId}`, {
+			method: 'DELETE',
+			headers: {
+				token: tokenId
+			}
+		});
+	
+		const data = await response.json();
+	
+		if(response.status == 200) {
+			// delete the current row from DOM
+			row.remove();
+
+			// add no-check-row if all checks are deleted
+			if(tableBody.querySelectorAll('tr').length == 0) {
+				tableBody
+					.insertAdjacentHTML('beforeend','<tr class="no-check-row"><td colspan=6>No checks!</td></tr>');
+			}
+
+			const newAlert = new Alert({
+				'message': 'Removed check successfully',
+				'type': 'success'
+			});
+			newAlert.appendAlertToDOM('#check-operation-update');
+		}
+		else {
+			const newAlert = new Alert({
+				'message': data.Error,
+				'type': 'notify'
+			});
+			newAlert.appendAlertToDOM('#check-operation-update');
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+/**
+ * 
+ * @param {Node} row : the row element which is clicked
+ * @param {*} tokenId : signed-in user login Id
+ * 
+ * Update the current check and update the row on the table
+ * 
+ */
+async function updateCheck(row, tokenId) {
+	/**
+	 * @todo PUT request to API to edit the check
+	 */	
 }
