@@ -362,6 +362,13 @@ async function createNewCheck(tokenId) {
 				if(noCheckRow) {
 					noCheckRow.remove();
 				}
+				
+				// notify the user
+				const newAlert = new Alert({
+					'message': 'New check added!',
+					'type': 'success'
+				});
+				newAlert.appendAlertToDOM('#check-operation-update');
 			}
 			else {
 				const newAlert = new Alert({
