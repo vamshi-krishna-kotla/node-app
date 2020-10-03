@@ -112,10 +112,16 @@
 			margin: auto;
 			width: 75%;
 
+			h1 {
+				border-bottom: 1px solid gray;
+				margin: 1rem auto;
+			}
+
 			table#current-checks {
-				padding: 2rem 0;
+				padding: 0 0 2rem 0;
 				border-bottom: 1px solid gray;
 				width: 100%;
+				margin-top: 0;
 
 				thead {
 					tr {
@@ -158,14 +164,15 @@
 			#new-check-form {
 				display: flex;
 				position: relative;
-				padding: 2rem 0;
+				padding: 0 0 2rem 0;
+				margin-top: 0;
 
 				fieldset {
 					border-radius: 0.35rem;
 					margin: 1rem;
 					padding: 1rem;
 				}
-				
+
 				label {
 					input[type=checkbox] {
 						margin: auto 0.25rem;
