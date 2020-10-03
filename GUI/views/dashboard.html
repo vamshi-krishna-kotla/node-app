@@ -29,21 +29,21 @@
 							<tr>
 								<td>First Name:</td>
 								<td>
-									<input class="user-firstName" type="text" name="user-firstName" disabled title/>
+									<input class="user-firstName" type="text" name="user-firstName" disabled/>
 									<span>Previous value is stored if left empty</span>
 								</td>
 							</tr>
 							<tr>
 								<td>Last Name:</td>
 								<td>
-									<input class="user-lastName" type="text" name="user-lastName" disabled title/>
+									<input class="user-lastName" type="text" name="user-lastName" disabled/>
 									<span>Previous value is stored if left empty</span>
 								</td>
 							</tr>
 							<tr>
 								<td>Email:</td>
 								<td>
-									<input class="user-email" type="text" name="user-email" disabled title/>
+									<input class="user-email" type="text" name="user-email" disabled/>
 									<span>Previous value is stored if left empty</span>
 								</td>
 							</tr>
@@ -130,7 +130,54 @@
 					</form>
 				</div>
 			</div>
-			<div class="pop-up hide"></div>
+			<div class="pop-up hide">
+				<div>
+					<table>
+						<tbody>
+							<tr>
+								<td>Check ID:</td>
+								<td>
+									<input class="check-id field" type="text" name="check-id" readonly />
+								</td>
+							</tr>
+							<tr>
+								<td>Protocol:</td>
+								<td>
+									<input class="protocol field" type="text" name="protocol" />
+								</td>
+							</tr>
+							<tr>
+								<td>Method:</td>
+								<td>
+									<input class="method field" type="text" name="method" />
+								</td>
+							</tr>
+							<tr>
+								<td>URL:</td>
+								<td>
+									<input class="url field" type="text" name="url" />
+								</td>
+							</tr>
+							<tr>
+								<td>Success Codes:</td>
+								<td>
+									<input class="success-codes field" type="text" name="success-codes" />
+								</td>
+							</tr>
+							<tr>
+								<td>Timeout Seconds:</td>
+								<td>
+									<input class="timeout-seconds field" type="number" min="1" max="5" name="timeout-seconds" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="btn-container">
+						<button class="delete-button">Delete</button>
+						<button class="update-button">Update</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		%%FOOTER_PLACEHOLDER%%

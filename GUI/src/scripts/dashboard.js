@@ -410,35 +410,32 @@ function expandCheck(row, tokenId) {
 		}
 	});
 
-	var popUpDivContent = document.createElement('div');
+	// filter check data from the table node 
+	var rowData = [];
+	row.querySelectorAll('td').forEach(data => {
+		rowData.push(data.innerText)
+	});
+
+	// populate the modal with check content
+	popUp.querySelectorAll('div table td .field').forEach((cell, index) => {
+		cell.value = rowData[index];
+	})
 
 	// add delete option to the modal
-	var deleteCheckButton = document.createElement('button');
-	deleteCheckButton.innerHTML = "Delete";
-	deleteCheckButton.addEventListener('click', function() {
+	var deleteCheckButton = popUp.querySelector('button.delete-button');
+	deleteCheckButton.onclick = function() {
 		deleteCheck(row, tokenId);
-		if(popUp.firstChild) {
-			popUp.removeChild(popUp.firstChild);
-		}
 		popUp.classList.add('hide');
-	});
-	popUpDivContent.appendChild(deleteCheckButton);
+	};
 
 	// add update option to the modal
-	var updateCheckButton = document.createElement('button');
-	updateCheckButton.innerHTML = "Update";
-	updateCheckButton.addEventListener('click', function() {
-		updateCheck(row, tokenId);
-		if(popUp.firstChild) {
-			popUp.removeChild(popUp.firstChild);
-		}
+	var updateCheckButton = popUp.querySelector('button.update-button');
+	updateCheckButton.onclick = function() {
+		updateCheck(tokenId);
 		popUp.classList.add('hide');
-	});
-	popUpDivContent.appendChild(updateCheckButton);
-
-	// attach check data to modal
-	popUp.appendChild(popUpDivContent);
+	};
 	
+	// display the modal 
 	popUp.classList.remove('hide');
 
 }
@@ -499,8 +496,8 @@ async function deleteCheck(row, tokenId) {
  * Update the current check and update the row on the table
  * 
  */
-async function updateCheck(row, tokenId) {
+async function updateCheck(tokenId) {
 	/**
 	 * @todo PUT request to API to edit the check
-	 */	
+	 */
 }

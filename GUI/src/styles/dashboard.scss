@@ -127,6 +127,7 @@
 					tr {
 						th {
 							border-bottom: 1px solid black;
+							border-top: 1px solid black;
 							margin: 0.025rem;
 							padding: 0.15rem;
 						}
@@ -222,7 +223,7 @@
 		left: 0;
 		position: fixed !important;
 		width: 100%;
-		background: rgba($color: gray, $alpha: 0.5);
+		background: rgba($color: gray, $alpha: 0.9);
 		height: 100%;
 		animation: fade-in 0.35s linear;
 		-moz-animation: fade-in 0.35s linear;
@@ -232,9 +233,13 @@
 
 		div {
 			margin: auto;
-			background-color: red;
+			background-color: whitesmoke;
 			width: 60%;
 			height: 60%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 2rem;
 		}
 	}
 }
