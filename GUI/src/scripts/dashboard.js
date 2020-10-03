@@ -117,7 +117,7 @@ function fillUserDetails(userDetails, tokenId) {
 	delete userDetails.tosAgreement;
 	var key;
 	for( key in userDetails ) {
-		document.querySelector(`.user-details input.user-${key}`).value = userDetails[key];
+		(document.querySelector(`.user-details input.user-${key}`) || {}).value = userDetails[key];
 	}
 
 	// hoist required elements
@@ -188,12 +188,46 @@ function fillUserDetails(userDetails, tokenId) {
  * Filter for any checks present currently and display
  * Notify user if no checks are present
  */
-async function showUserChecks(userDetails, tokenId) {
+function showUserChecks(userDetails, tokenId) {
+
+	document.querySelector('#new-check-form').addEventListener("submit", function (event) {
+		event.preventDefault();
+		createNewCheck(tokenId);
+	});
+
 	if(userDetails.checks && userDetails.checks.length > 0) {
 		// there are checks present for a user
-		/**
-		 * @todo fetch each check details and fill the user checks table
-		 */
+		userDetails.checks.forEach(async check => {
+			var response = await fetch(`http://localhost:3000/checks?id=${check}`, {
+				method: 'GET',
+				headers: {
+					token: tokenId
+				}
+			});
+
+			const data = await response.json();
+
+			if(response.status == 200) {
+				// show check to the user
+				document.querySelector('#user-check-details table#current-checks tbody')
+					.insertAdjacentHTML('beforeend',
+					`<tr>
+						<td>${data.id}</td>
+						<td>${data.protocol}</td>
+						<td>${data.url}</td>
+						<td>${data.method}</td>
+						<td>${data.successCodes}</td>
+						<td>${data.timeoutSeconds}</td>
+					</tr>`);
+			}
+			else {
+				const newAlert = new Alert({
+					'message': 'Error fetching check details!',
+					'type': 'fail'
+				});
+				newAlert.appendAlertToDOM('#user-check-details');
+			}
+		});
 	}
 	else {
 		// no checks currently
@@ -252,7 +286,79 @@ async function updateUserDetails(payload, userPhone, userTokenId) {
 		const alert = new Alert(alertData);
 		alert.appendAlertToDOM('#user-personal-details');
 
+		// close the edit options
+		document.querySelector('#user-personal-details .close-edit').click();
+
 	} catch (error) {
 		console.error(error);
+	}
+}
+
+/**
+ * 
+ * @param {String} tokenId: login token of the signed in user
+ * 
+ * Creates a new check if all inputs are valid  
+ */
+async function createNewCheck(tokenId) {
+	const form = document.querySelector('#new-check-form');
+
+	var payload = {};
+
+	payload.protocol = form.querySelector('#new-check-protocol').value;
+	payload.url = form.querySelector('#new-check-url').value;
+	payload.method = form.querySelector('#new-check-method').value;
+	payload.successCodes = [];
+	payload.timeoutSeconds = parseInt(form.querySelector('#new-check-timeoutSec').value);
+
+	[...form.querySelectorAll('input[name="statusCode"]')].forEach(input => {
+		if(input.checked) {
+			payload.successCodes.push(input.value);
+		}
+	});
+
+	if(payload.successCodes.length > 0) {
+		// send POST request to create new check
+		try {
+			var response = await fetch('http://localhost:3000/checks', {
+				method: 'POST',
+				body: JSON.stringify(payload),
+				headers: {
+					token: tokenId
+				}
+			});
+
+			var data = await response.json();
+
+			if(response.status == 200) {
+				// fetched successful response from create check method
+				document.querySelector('#user-check-details table#current-checks tbody')
+					.insertAdjacentHTML('beforeend',
+					`<tr>
+						<td>${data.id}</td>
+						<td>${data.protocol}</td>
+						<td>${data.url}</td>
+						<td>${data.method}</td>
+						<td>${data.successCodes}</td>
+						<td>${data.timeoutSeconds}</td>
+					</tr>`);
+			}
+			else {
+				const newAlert = new Alert({
+					'message': data.Error,
+					'type': 'notify'
+				});
+				newAlert.appendAlertToDOM('#user-check-details');
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	else {
+		const newAlert = new Alert({
+			'message': 'Please select one or more success codes!',
+			'type': 'notify'
+		});
+		newAlert.appendAlertToDOM('#user-check-details');
 	}
 }

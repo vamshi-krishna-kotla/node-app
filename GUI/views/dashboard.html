@@ -71,6 +71,7 @@
 					<table id="current-checks">
 						<thead>
 							<tr>
+								<th>Check ID</th>
 								<th>Protocol</th>
 								<th>URL</th>
 								<th>Method</th>
@@ -78,6 +79,7 @@
 								<th>TimeoutSeconds</th>
 							</tr>
 						</thead>
+						<tbody></tbody>
 					</table>
 					<form id="new-check-form">
 						<fieldset>
@@ -89,25 +91,25 @@
 						</fieldset>
 						<fieldset>
 							<legend>URL</legend>
-							<input type="url" name="url" id="new-check-url" required>
+							<input type="text" name="url" id="new-check-url" required>
 						</fieldset>
 						<fieldset>
 							<legend>Method</legend>
 							<select name="method" id="new-check-method">
-								<option value="GET">GET</option>
-								<option value="POST">POST</option>
-								<option value="PUT">PUT</option>
-								<option value="DELETE">DELETE</option>
+								<option value="get">GET</option>
+								<option value="post">POST</option>
+								<option value="put">PUT</option>
+								<option value="delete">DELETE</option>
 							</select>
 						</fieldset>
 						<fieldset>
 							<legend>Success Codes</legend>
-							<label for="200"><input type="checkbox" name="200">200</label>
-							<label for="301"><input type="checkbox" name="301">301</label>
-							<label for="400"><input type="checkbox" name="400">400</label>
-							<label for="401"><input type="checkbox" name="401">401</label>
-							<label for="404"><input type="checkbox" name="404">404</label>
-							<label for="500"><input type="checkbox" name="500">500</label>
+							<label for="200"><input type="checkbox" name="statusCode" value="200">200</label>
+							<label for="301"><input type="checkbox" name="statusCode" value="301">301</label>
+							<label for="400"><input type="checkbox" name="statusCode" value="400">400</label>
+							<label for="401"><input type="checkbox" name="statusCode" value="401">401</label>
+							<label for="404"><input type="checkbox" name="statusCode" value="404">404</label>
+							<label for="500"><input type="checkbox" name="statusCode" value="500">500</label>
 						</fieldset>
 						<fieldset>
 							<legend>Timeout Seconds</legend>

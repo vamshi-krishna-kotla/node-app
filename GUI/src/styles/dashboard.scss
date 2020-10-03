@@ -74,7 +74,7 @@
 				}
 			}
 
-			input {
+			input[type=button] {
 				border: none;
 				cursor: pointer;
 				text-align: center;
@@ -129,16 +129,22 @@
 	
 				tbody {
 					tr:nth-child(odd) {
-						background-color: grey;
+						background-color: whitesmoke;
 					}
 					tr:nth-child(even) {
 						background-color: white;
 					}
 	
 					tr {
+						transition-duration: 0.5s;
+
 						td {
 							margin: 0.025rem;
 							border: 1px solid black;
+						}
+
+						&:hover {
+							background-color: grey;
 						}
 					}
 				}
@@ -160,6 +166,12 @@
 					padding: 1rem;
 				}
 				
+				label {
+					input[type=checkbox] {
+						margin: auto 0.25rem;
+					}
+				}
+
 				.submit-check-container {
 					display: block;
 					width: 100%;
