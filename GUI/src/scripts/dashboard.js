@@ -393,7 +393,7 @@ async function createNewCheck(tokenId) {
 /**
  * 
  * @param {Node} row : the row element which is clicked
- * @param {*} tokenId : signed-in user login Id
+ * @param {String} tokenId : signed-in user login Id
  * 
  * Expand the clicked check to view, edit and delete that check
  * 
@@ -431,7 +431,7 @@ function expandCheck(row, tokenId) {
 	// add update option to the modal
 	var updateCheckButton = popUp.querySelector('button.update-button');
 	updateCheckButton.onclick = function() {
-		updateCheck(tokenId);
+		updateCheck(row, tokenId);
 		popUp.classList.add('hide');
 	};
 	
@@ -496,8 +496,70 @@ async function deleteCheck(row, tokenId) {
  * Update the current check and update the row on the table
  * 
  */
-async function updateCheck(tokenId) {
-	/**
-	 * @todo PUT request to API to edit the check
-	 */
+async function updateCheck(row, tokenId) {
+	var checkTable = document.querySelector('.pop-up .pop-up-content table');
+
+	var payload = {};
+	var check = checkTable.querySelector('input[name="check-id"]').value;
+
+	// get check data
+	payload.protocol = checkTable.querySelector('input[name="protocol"]').value;
+	payload.url = checkTable.querySelector('input[name="url"]').value;
+	payload.method = checkTable.querySelector('input[name="method"]').value;
+	payload.successCodes = checkTable.querySelector('input[name="success-codes"]').value;
+	payload.timeoutSeconds = checkTable.querySelector('input[name="timeout-seconds"]').value;
+
+	// parse check data
+	payload.timeoutSeconds = parseInt(payload.timeoutSeconds);
+	payload.successCodes = payload.successCodes.split(',');
+
+	try {
+		var alertData = {};
+
+		// send the request
+		var response = await fetch(`http://localhost:3000/checks?id=${check}`, {
+			method: 'PUT',
+			body: JSON.stringify(payload),
+			headers: {
+				token: tokenId
+			}
+		});
+
+		if(response.status == 200) {
+			// update the row
+			row.insertAdjacentHTML('afterend',
+			`<tr>
+				<td>${check}</td>
+				<td>${payload.protocol}</td>
+				<td>${payload.url}</td>
+				<td>${payload.method}</td>
+				<td>${payload.successCodes}</td>
+				<td>${payload.timeoutSeconds}</td>
+			</tr>`);
+			row.remove();
+			// show an alert with successful message
+			alertData = {
+				"message": "Check updated successfully!",
+				"type": "success"
+			};
+		}
+		else {
+			const data = await response.json();
+
+			// show an alert with failure message
+			alertData = {
+				"message": data.Error,
+				"type": "fail"
+			};
+		}
+	} catch (error) {
+		alertData = {
+			"message": "Failed to update check! Please try again later!",
+			"type": "fail"
+		};
+	}
+	finally {
+		const newAlert = new Alert(alertData);
+		newAlert.appendAlertToDOM('#check-operation-update');
+	}
 }

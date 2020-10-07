@@ -231,15 +231,60 @@
 		-o-animation: fade-in 0.35s linear;
 		z-index: 3;
 
-		div {
+		.pop-up-content {
 			margin: auto;
 			background-color: whitesmoke;
-			width: 60%;
-			height: 60%;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			padding: 2rem;
+			border-radius: 10px;
+
+			table {
+				margin: 0.85rem;
+
+				input {
+					border: none;
+					border-radius: 5px;
+					border-bottom: 1px solid gray;
+					padding: 0.25rem 0.5rem;
+				}
+			}
+
+			.btn-container {
+				display: flex;
+				flex-direction: row;
+				align-content: center;
+				justify-content: space-around;
+				margin: 1.5rem auto 0;
+				width: 100%;
+
+				button {
+					border: none;
+					border-radius: 5px;
+					cursor: pointer;
+					padding: 0.5rem;
+					transition-duration: 0.5s;
+					-webkit-transition-duration: 0.5s;
+					-o-transition-duration: 0.5s;
+					-moz-transition-duration: 0.5s;
+					color: white;
+					font-weight: bold;
+
+					&.update-button {
+						background-color: blue;
+					}
+
+					&.delete-button {
+						background-color: red;
+					}
+	
+					&:active {
+						transform: translateY(4px);
+						box-shadow: 2px 4px gray;
+					}
+				}
+			}
 		}
 	}
 }
