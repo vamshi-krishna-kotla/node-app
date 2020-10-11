@@ -214,6 +214,40 @@
 				}
 			}
 		}
+		#delete-user-container {
+			margin: 2rem;
+			text-align: center;
+
+			#delete-warn {
+				font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+				color: red;
+				margin-bottom: 1rem;
+				cursor: pointer;
+			}
+			#delete-user {
+				margin-top: 1rem;
+				background-color: red;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				padding: 0.5rem;
+				transition-duration: 0.5s;
+				-webkit-transition-duration: 0.5s;
+				-o-transition-duration: 0.5s;
+				-moz-transition-duration: 0.5s;
+				color: white;
+				font-weight: bold;
+				animation: slide 0.35s linear;
+				-moz-animation: slide 0.35s linear;
+				-webkit-animation: slide 0.35s linear;
+				-o-animation: slide 0.35s linear;
+
+				&:active {
+					transform: translateY(4px);
+					box-shadow: 2px 4px gray;
+				}
+			}
+		}
 	}
 
 	.pop-up {
@@ -289,11 +323,13 @@
 	}
 }
 
-@keyframes pop-out {
+@keyframes slide {
 	0% {
-		transform: scale(0);
+		height: 0;
+		padding: 0;
+		margin: 0;
 	}
 	100% {
-		transform: scale(1);
+		height: auto;
 	}
 }

@@ -67,8 +67,19 @@ async function getUserInfo(userData) {
 			hideHeaderLinks('sign-in', 'sign-up');
 
 			// add logout functionality to the option in header
-			addLogOutFunction(userData);
+			document.querySelector("#header .menu .menu-list .log-out").onclick = function () {
+				logOutUser(userData);
+			};
 
+			// add delete account functionality
+			document.querySelector('#delete-warn').onclick = function () {
+				document.querySelector('#delete-user').classList.toggle('hide');
+			};
+			document.querySelector('#delete-user').onclick = function () {
+				deleteUserAccount(userData);
+			};
+
+			// fill in user details
 			fillUserDetails(data, userData.tokenId);
 
 			// show pre-registered user checks
@@ -112,13 +123,44 @@ async function getUserInfo(userData) {
  * 
  * Removed the session of the user when logged out and navigate to home page
  */
-function addLogOutFunction(userData) {
-	document.querySelector("#header .menu .menu-list .log-out").onclick = function (event) {
-		const loginData = JSON.parse(sessionStorage.getItem('appUserData'));
-		delete loginData[userData.phone];
-		sessionStorage.setItem('appUserData', JSON.stringify(loginData));
-		window.location = '/';
-	};
+function logOutUser(userData) {
+	const loginData = JSON.parse(sessionStorage.getItem('appUserData'));
+	delete loginData[userData.phone];
+	sessionStorage.setItem('appUserData', JSON.stringify(loginData));
+	window.location = '/';
+}
+
+/**
+ * 
+ * @param {Object} userData : current user data
+ * 
+ * Delete the user account and log the user out
+ */
+async function deleteUserAccount(userData) {
+	try {
+		var response = await fetch(`http://localhost:3000/users?phone=${userData.phone}`, {
+			method: 'DELETE',
+			headers: {
+				token: userData.tokenId
+			}
+		});
+
+		if(response.status == 200) {
+			// clicking the logout the button to log the user out
+			logOutUser(userData);
+		}
+		else {
+			const data = await response.json();
+			const newAlert = new Alert({
+				'message': data.Error,
+				'type': 'fail'
+			});
+			newAlert.appendAlertToDOM('#delete-user-container');
+		}
+	} catch (error) {
+		console.error(error);
+	}
+
 }
 
 /**
@@ -421,9 +463,6 @@ function expandCheck(row, tokenId) {
 	var popUp = document.querySelector('.pop-up');
 	popUp.addEventListener('click', function(event) {
 		if(event.target == popUp) {
-			if(popUp.firstChild) {
-				popUp.removeChild(popUp.firstChild);
-			}
 			popUp.classList.add('hide');
 		}
 	});
