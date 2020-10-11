@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function(){
  * init method for the page
  */
 function dashboardInit() {
-	hideHeaderLinks('sign-in', 'sign-up', 'log-out');
+	hideHeaderLinks('sign-in', 'sign-up');
 
 	// get sessioStorage data
 	const loginData = JSON.parse(sessionStorage.getItem('appUserData'));
@@ -65,6 +65,10 @@ async function getUserInfo(userData) {
 		if(response.status === 200) {
 			// user details found: populate DOM with details
 			hideHeaderLinks('sign-in', 'sign-up');
+
+			// add logout functionality to the option in header
+			addLogOutFunction(userData);
+
 			fillUserDetails(data, userData.tokenId);
 
 			// show pre-registered user checks
@@ -100,6 +104,21 @@ async function getUserInfo(userData) {
 	catch(e) {
 		console.error(e);
 	}
+}
+
+/**
+ * 
+ * @param {Object} userData : user data found from sessionStorage when logged in
+ * 
+ * Removed the session of the user when logged out and navigate to home page
+ */
+function addLogOutFunction(userData) {
+	document.querySelector("#header .menu .menu-list .log-out").onclick = function (event) {
+		const loginData = JSON.parse(sessionStorage.getItem('appUserData'));
+		delete loginData[userData.phone];
+		sessionStorage.setItem('appUserData', JSON.stringify(loginData));
+		window.location = '/';
+	};
 }
 
 /**
@@ -397,7 +416,6 @@ async function createNewCheck(tokenId) {
  * 
  * Expand the clicked check to view, edit and delete that check
  * 
- * @todo expand modal with check details and button clicks
  */
 function expandCheck(row, tokenId) {
 	var popUp = document.querySelector('.pop-up');
