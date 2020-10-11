@@ -1,3 +1,11 @@
 import '../styles/home.scss';
 
-console.log('Home page JS loaded!');
+import { hideHeaderLinks } from '../support';
+
+document.addEventListener('DOMContentLoaded', function(){
+	homePageInit();
+});
+
+function homePageInit() {
+	hideHeaderLinks('log-out');
+}

@@ -64,7 +64,8 @@ export function hideHeaderLinks(...links) {
 	links.forEach(link => {
 		const linkElement = document.querySelector(`#header .menu-list .${link}`);
 		if(linkElement) {
-			linkElement.classList.add('hide');
+			// remove the header element
+			linkElement.remove();
 		}
 	})
 }
