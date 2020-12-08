@@ -57,7 +57,7 @@ export class Alert {
 
 export function hideHeaderLinks(...links) {
 	// remove 'hide' from all header links
-	document.querySelectorAll(`#header .menu-list li`).forEach(link => {
+	[...document.querySelectorAll(`#header .menu-list li`)].forEach(link => {
 		link.classList.remove('hide');
 	});
 	// hide given links
