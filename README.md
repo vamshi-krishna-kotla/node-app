@@ -21,6 +21,7 @@ A node based (local) web application to check the status of URLs, given by 'auth
 3. GUI built to serve the static HTML, CSS and JS assets of respective pages
 4. `Login` feature that authenticates users to view/edit/delete their data
 5. Enables user to delete the account, which deletes all the corresponding user data in the backend
+6. Use of `CSS Grid layout` and `fetch` API [works only on browsers that support these features]
 
 ## Basic workflow
 1. Start the API server
