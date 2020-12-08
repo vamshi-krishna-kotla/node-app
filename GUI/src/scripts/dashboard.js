@@ -1,5 +1,6 @@
 import '../styles/dashboard.scss';
 
+import '@babel/polyfill';
 import { Alert, hideHeaderLinks } from '../support';
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -469,12 +470,12 @@ function expandCheck(row, tokenId) {
 
 	// filter check data from the table node 
 	var rowData = [];
-	row.querySelectorAll('td').forEach(data => {
+	[...row.querySelectorAll('td')].forEach(data => {
 		rowData.push(data.innerText)
 	});
 
 	// populate the modal with check content
-	popUp.querySelectorAll('div table td .field').forEach((cell, index) => {
+	[...popUp.querySelectorAll('div table td .field')].forEach((cell, index) => {
 		cell.value = rowData[index];
 	})
 
@@ -583,16 +584,22 @@ async function updateCheck(row, tokenId) {
 		});
 
 		if(response.status == 200) {
-			// update the row
-			row.insertAdjacentHTML('afterend',
-			`<tr>
+			// create new row
+			let updatedRow = document.createElement('tr');
+			updatedRow.innerHTML = `
 				<td>${check}</td>
 				<td>${payload.protocol}</td>
 				<td>${payload.url}</td>
 				<td>${payload.method}</td>
 				<td>${payload.successCodes}</td>
 				<td>${payload.timeoutSeconds}</td>
-			</tr>`);
+			`;
+			updatedRow.addEventListener('click', function(){
+				// expand to view/edit/delete check
+				expandCheck(updatedRow, tokenId);
+			});
+			// update the row, i.e., add new row as sibling and remove old row
+			row.insertAdjacentElement('afterend', updatedRow);
 			row.remove();
 			// show an alert with successful message
 			alertData = {
@@ -614,6 +621,7 @@ async function updateCheck(row, tokenId) {
 			"message": "Failed to update check! Please try again later!",
 			"type": "fail"
 		};
+		console.error(error);
 	}
 	finally {
 		const newAlert = new Alert(alertData);
