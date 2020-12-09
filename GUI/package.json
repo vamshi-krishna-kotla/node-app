@@ -4,12 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "npm run build && node index",
-		"dev-server": "concurrently \"npm run start:dev\" \"npm run dev\"",
-		"start:dev": "nodemon",
-		"dev": "webpack-dev-server",
+		"build:dev": "npx rimraf dist && webpack --mode development",
 		"build": "npx rimraf dist && webpack --mode production",
-		"build:dev": "npx rimraf dist && webpack --mode development"
+		"dev-server": "concurrently \"npm run start:dev\" \"npm run dev\"",
+		"dev": "webpack-dev-server",
+		"start:dev": "nodemon",
+		"start": "npm run build && node index"
 	},
 	"keywords": [],
 	"author": "",
