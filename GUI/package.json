@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "npm run build && node index",
+		"dev-server": "concurrently \"npm run start:dev\" \"npm run dev\"",
 		"start:dev": "nodemon",
 		"dev": "webpack-dev-server",
 		"build": "npx rimraf dist && webpack --mode production",
