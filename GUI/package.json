@@ -4,19 +4,24 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "npm run build && node index",
-		"start:dev": "nodemon",
-		"dev": "webpack-dev-server",
+		"build:dev": "npx rimraf dist && webpack --mode development",
 		"build": "npx rimraf dist && webpack --mode production",
-		"build:dev": "npx rimraf dist && webpack --mode development"
+		"dev-server": "concurrently \"npm run start:dev\" \"npm run dev\"",
+		"dev": "webpack-dev-server",
+		"start:dev": "nodemon",
+		"start": "npm run build && node index"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@babel/polyfill": "^7.12.1",
 		"express": "^4.17.1"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.12.9",
+		"@babel/preset-env": "^7.12.7",
+		"babel-loader": "^8.2.2",
 		"css-loader": "^3.6.0",
 		"file-loader": "^6.0.0",
 		"mini-css-extract-plugin": "^0.9.0",

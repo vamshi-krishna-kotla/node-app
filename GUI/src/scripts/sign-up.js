@@ -1,5 +1,6 @@
 import '../styles/sign-up.scss';
 
+import '@babel/polyfill';
 import { Alert, hideHeaderLinks } from '../support';
 
 document.addEventListener('DOMContentLoaded', function () {

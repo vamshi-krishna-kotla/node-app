@@ -14,6 +14,8 @@
 	* express server needs to be working together with the webpack-dev-server
 	* `npm run start:dev` -> to start the express server in dev mode
 	* `npm run dev` -> to start the webpack-dev-server
+	* (**MVP**) `npm run dev-server` -> to run both the above servers for easing development
+		- this uses an npm package called [**concurrently**](https://www.npmjs.com/package/concurrently) to run multiple commands from a single terminal (each command runs on its own thread)
 	* The dev server stores the bundled files in memory without actually generating them for production, the actual server is running in express port [4000] while the webpack-dev-server uses it as proxy at port 8080
 
 - ***generation of HTML pages***
