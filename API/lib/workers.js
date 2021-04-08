@@ -147,8 +147,14 @@ workers.performCheck = function (originalCheckData) {
  * Trigger an alert to the user if needed
  */
 workers.processCheckOutcome = function (originalCheckData, checkOutcome) {
-	// decide if the check is considered 'up' pr 'down'
-	var state = ((!checkOutcome.error) && (checkOutcome.responseCode) && (originalCheckData.successCodes.indexOf(checkOutcome.responseCode) > -1)) ? 'up' : 'down';
+	// decide if the check is considered 'up' or 'down'
+
+	/**
+	 * the "responseStatus" is converted to string before checking if it is given as part 
+	 * of the "succesCodes" by the user as the "successCodes", given by the user, will be stored in string format
+	 * 
+	 */
+	var state = ((!checkOutcome.error) && (checkOutcome.responseCode) && (originalCheckData.successCodes.indexOf(checkOutcome.responseCode.toString()) > -1)) ? 'up' : 'down';
 
 	// decide if an alert is warranted
 	var alertWarranted = ((originalCheckData.lastChecked) && (originalCheckData.state != state)) ? true : false;
