@@ -1,0 +1,15 @@
+.info {
+	border-radius: 5px;
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 1.5rem;
+	padding: 1rem;
+	transition: all 0.5s;
+
+	&.up {
+		background: rgba($color: green, $alpha: 0.75);
+	}
+
+	&.down {
+		background: rgba($color: #ff1100, $alpha: 0.75);
+	}
+}
