@@ -22,11 +22,16 @@ module.exports = {
 		}
 	},
 	plugins: [
+		/**
+		 * webpack plugin to extract CSS into separate files instead of
+		 * loading it inside style tag on to the DOM
+		 */
 		new MiniCssExtractPlugin({
 			filename: 'styles/[name].css'
 		})
 	],
 	module: {
+		// webpack rules to parse different types of files
 		rules: [
 			{
 				test: /\.js$/,
@@ -34,10 +39,45 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['@babel/preset-env', '@babel/preset-react']
+						// babel presets to convert JS into browser executable code
+						presets: ['@babel/preset-env', '@babel/preset-react'],
+
+						/**
+						 * presets = combination of plugins
+						 */
+
+						// plugin to allow assigning properties to classes
+						plugins: ['@babel/plugin-proposal-class-properties']
 					}
 				}
 			},
+			// CSS rules for CSS modules used inside React components
+			{
+				test: /\.module.css$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader
+					},
+					{
+						loader: 'css-loader',
+						query: {
+							importLoaders: 2,
+							modules: {
+								/**
+								 * specify the format of classNames
+								 * 
+								 * <name-of-file>__<className>__<base64-number-with-specified-digits>
+								 * e.g.: .Info-module__info___1ClHo
+								 * 
+								 * if not mentioned then a random hash will be generated
+								 */
+								localIdentName: '[name]__[local]___[hash:base64:5]'
+							}
+						}
+					}
+				]
+			},
+			// CSS rule to compile global CSS
 			{
 				test: /\.css$/,
 				use: [
@@ -45,7 +85,12 @@ module.exports = {
 						loader: MiniCssExtractPlugin.loader
 					},
 					'css-loader'
-				]
+				],
+				/**
+				 * excluding [file].module.css as they are used as CSS modules
+				 * in React components
+				 */
+				exclude: /\.module.css$/
 			},
 			{
 				test: /\.(scss|sass)$/,
