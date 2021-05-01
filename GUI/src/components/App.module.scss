@@ -1,3 +1,23 @@
 .App {
-	padding: 10px;
+	display: grid;
+	grid-template-areas:
+		"dev-info features"
+		"info info"
+		;
+	padding: 10px 0;
+
+	/*
+		NOTE: CSS modules can give CSS to child elements with general selectors
+		class selectors and id selectors are not working to apply CSS from
+		main CSS module to internal components CSS modules
+
+		Individual CSS needed to be used, in each components' CSS module
+		to work with the styles of the main module
+		OR
+		Use a seperate styles file without CSS modules
+	*/
+
+	div {
+		padding: 0.5rem;
+	}
 }

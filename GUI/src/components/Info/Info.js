@@ -28,7 +28,7 @@ class Info extends Component {
 		}, 3500);
 
 		return(
-			<div className={[styles.info, this.state.pageStatus ? styles.up : styles.down].join(' ')}>
+			<div className={[styles.info, this.props.propClass, this.state.pageStatus ? styles.up : styles.down].join(' ')}>
 				Get notified if your page is {this.state.pageStatus ? "UP" : "DOWN"}
 			</div>
 		);

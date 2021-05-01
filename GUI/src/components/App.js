@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
 import Info from '../components/Info/Info';
+import Dev from '../components/Dev/Dev';
+import Features from "../components/Features/Features";
 
 import styles from './App.module.scss';
+
+import './index.scss';
 
 class App extends Component {
 	
@@ -13,7 +17,9 @@ class App extends Component {
 	render() {
 		return(
 			<div className = {styles.App}>
-				<Info />
+				<Info propClass = "propInfo"/>
+				<Dev propClass = "propDevInfo"/>
+				<Features propClass = "propFeatures"/>
 			</div>
 		);
 	}
