@@ -60,7 +60,7 @@ module.exports = {
 					},
 					{
 						loader: 'css-loader',
-						query: {
+						options: {
 							importLoaders: 2,
 							modules: {
 								/**
@@ -92,6 +92,41 @@ module.exports = {
 				 */
 				exclude: /\.module.css$/
 			},
+			// SCSS rules for CSS modules used inside React components
+			{
+				test: /\.module.(scss|sass)$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader
+					},
+					{
+						loader: 'css-loader',
+						/**
+						 * 
+						 * NOTE: The options object SHOULD be given for css-loader
+						 * even for the SCSS/SASS rules
+						 * 
+						 * The parsing for CSS modules is done at CSS level but not at SCSS/SASS level
+						 */
+						options: {
+							importLoaders: 2,
+							modules: {
+								/**
+								 * specify the format of classNames
+								 * 
+								 * <name-of-file>__<className>__<base64-number-with-specified-digits>
+								 * e.g.: .Info-module__info___1ClHo
+								 * 
+								 * if not mentioned then a random hash will be generated
+								 */
+								localIdentName: '[name]__[local]___[hash:base64:5]'
+							}
+						}
+					},
+					'sass-loader'
+				]
+			},
+			// SCSS rule to compile global SCSS
 			{
 				test: /\.(scss|sass)$/,
 				use: [
@@ -100,7 +135,12 @@ module.exports = {
 					},
 					'css-loader',
 					'sass-loader'
-				]
+				],
+				/**
+				 * excluding [file].module.scss as they are used as CSS modules
+				 * in React components
+				 */
+				exclude: /\.module.(scss|sass)$/
 			},
 			{
 				test: /\.(png|jpeg|jpg|gif)$/,
