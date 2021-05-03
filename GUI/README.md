@@ -26,3 +26,8 @@
 
 ## Deployment to production
 use `npm run start` to generate the static build and serve on **localhost 4000**
+
+## Note
+The UI uses **`fetch`** API for network calls to the backend, that does not work on browsers like IE
+
+**`Chrome`** or **`Firefox`** are the prefered browsers for checking out workflow the application
