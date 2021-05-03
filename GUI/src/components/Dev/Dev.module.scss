@@ -2,4 +2,27 @@
 	border: 1px solid black;
 	border-radius: 5px;
 	margin: 0.5rem;
+	padding: 0 1rem;
+
+	.title {
+		font-size: 20px;
+		margin: 1rem auto;
+		text-transform: uppercase;
+	}
+
+	.devFeaturesList {
+		margin: auto;
+		list-style-type: circle;
+		width: 75%;
+
+		.devFeaturesListItem {
+			border-bottom: 0.5px solid rgba($color: gray, $alpha: 1.0);
+			margin: 12px auto;
+			transition: all 0.5s ease-in;
+
+			&:hover {
+				transform: scale(1.15);
+			}
+		}
+	}
 }

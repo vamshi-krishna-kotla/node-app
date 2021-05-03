@@ -3,7 +3,14 @@ import React, { Component } from 'react';
 import styles from './Features.module.scss';
 
 export default class Features extends Component {
-	state = {};
+	state = {
+		funcFeatures : [
+			"Sign Up with new credentials",
+			"Sign In to check your details",
+			"Set upto 5 checks for your pages",
+			"Edit and update your check(s)"
+		]
+	};
 
 	constructor(props) {
 		super(props);
@@ -12,7 +19,13 @@ export default class Features extends Component {
 	render () {
 		return (
 			<div className={[styles.features, this.props.propClass].join(' ')}>
-				Features List
+				<p className={styles.title}><strong>Functional Features</strong></p>
+				<hr></hr>
+				<ul className={styles.funcFeaturesList}>
+					{
+						this.state.funcFeatures.map((feature, index) => <li className={styles.funcFeaturesListItem} key={index}>{feature}</li>)
+					}
+				</ul>
 			</div>
 		);
 	};
