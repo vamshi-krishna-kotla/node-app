@@ -57,15 +57,20 @@ export class Alert {
 
 export function hideHeaderLinks(...links) {
 	// remove 'hide' from all header links
-	[...document.querySelectorAll(`#header .menu-list li`)].forEach(link => {
-		link.classList.remove('hide');
-	});
-	// hide given links
-	links.forEach(link => {
-		const linkElement = document.querySelector(`#header .menu-list .${link}`);
-		if(linkElement) {
-			// remove the header element
-			linkElement.remove();
-		}
-	})
+	try {
+		[...document.querySelectorAll(`#header .menu-list li`)].forEach(link => {
+			link.classList.remove('hide');
+		});
+		// hide given links
+		links.forEach(link => {
+			const linkElement = document.querySelector(`#header .menu-list .${link}`);
+			if(linkElement) {
+				// remove the header element
+				linkElement.remove();
+			}
+		})
+	}
+	catch(err) {
+		console.error(err);
+	}
 }
