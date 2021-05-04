@@ -1,0 +1,24 @@
+<!--
+	HTML for the error component
+	will include the elements which are put into the container from the React component
+
+	NOTE: To apply classes to any element, use the "data-class" attribute
+	with which the JS will be able to find the respective elements and apply the classes
+
+	<div data-class="<attr_val>"></div>
+	will be added a class 'error-<attr_val>' from the CSS module
+
+	e.g.
+	<h1 data-class="title">404 page</h1> in this file
+	will be given a class like
+	<h1 data-class="title" className=[stylesModule.error-title]>404 page</h1>
+
+	which can be rendered as
+	<h1 data-class="title" class="ErrorComp-module__error-title___Iy0yY">404 page</h1>
+	based on the CSS module format given in webpack.config.js
+-->
+
+<h1 data-class="title">404 page</h1>
+<div data-class="content-container">
+	<h2>You've reached not where you wanted?</h2>
+</div>

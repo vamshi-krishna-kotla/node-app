@@ -1,0 +1,16 @@
+.error-page {
+	display: block;
+
+	.error-title {
+		border: 0.5px solid rgba($color: gray, $alpha: 0.5);
+		font-size: 1.5rem;
+		margin: 1rem auto;
+		text-align: center;
+	}
+
+	.error-content-container {
+		background: rgba($color: gray, $alpha: 0.5);
+		border-radius: 5px;
+		padding: 1rem 0.5rem;
+	}
+}
