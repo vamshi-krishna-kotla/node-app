@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-function ErrorComp(params) {
+// seperated HTML into another file
+import ErrorCompHTML from './ErrorComp.html';
+
+import styles from './ErrorComp.module.scss';
+
+function ErrorComp() {
+
+	useEffect(() => {
+		// set the HTML once the component is mounted onto the DOM
+		document.querySelector(`.${styles['error-page']}`).insertAdjacentHTML('afterbegin', ErrorCompHTML);
+		/**
+		 * set the CSS module classes to all elements that are given the
+		 * data-class attribute in the HTML section
+		 */
+		try {
+			[...document.querySelectorAll('[data-class]')].forEach(element => {
+				element.classList.add(styles[`error-${element.dataset.class}`]);
+			});
+		}
+		catch(err) {
+			console.error(err);
+		}
+	});
+
 	return(
-		<div>
-			<h1>404</h1>
+		// the parent div where the HTML will be put into
+		<div className={styles['error-page']}>
+			placeholder test text for any components to be added inside Error page component
 		</div>
 	);
+
 }
 
 export default ErrorComp;
