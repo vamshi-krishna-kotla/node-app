@@ -150,6 +150,10 @@ module.exports = {
 						name: 'images/[name].[ext]'
 					}
 				}
+			},
+			{
+				test: /\.html$/i,
+				loader: 'html-loader',
 			}
 		]
 	}
