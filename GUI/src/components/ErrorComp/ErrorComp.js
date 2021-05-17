@@ -7,9 +7,22 @@ import styles from './ErrorComp.module.scss';
 
 function ErrorComp() {
 
+	// local variable to store updated HTML
+	let errorComponentHTML;
+
 	useEffect(() => {
+
+		/**
+		 * removing the commented part(s) from the 
+		 * imported HTML before appending it to the DOM
+		 * 
+		 * replacing with empty string, the {text, spaces, ", <, >, =, :, ',', [, ], -} 
+		 * that are present in between the comment tags <!-- and -->
+		 */
+		errorComponentHTML = ErrorCompHTML.replace(/<!--[\w\s:,\"-<=>\[\]]+-->/gm, '');
+
 		// set the HTML once the component is mounted onto the DOM
-		document.querySelector(`.${styles['error-page']}`).insertAdjacentHTML('afterbegin', ErrorCompHTML);
+		document.querySelector(`.${styles['error-page']}`).insertAdjacentHTML('afterbegin', errorComponentHTML);
 		/**
 		 * set the CSS module classes to all elements that are given the
 		 * data-class attribute in the HTML section
