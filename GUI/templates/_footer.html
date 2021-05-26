@@ -3,8 +3,8 @@
 	<h3 class="copyrights-text">
 		Copyrights acquired | SOME COMPANY Inc.
 	</h3>
-	<div class="content">
-		<div class="dev-reference-links">
+	<div class="default content">
+		<div class="default dev-reference-links">
 			<p> &lt;development reference links/&gt; </p>
 			<ul class="links">
 				<li class="dev-ref-link">
@@ -39,7 +39,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="link-to-github">
+		<div class="default link-to-github">
 			<p>find me on github ------&gt;</p>
 			<a href="https://github.com/vamshi-krishna-kotla/node-url-monitor" target="_blank">
 				<span class="github-icon">
@@ -47,7 +47,7 @@
 				</span>
 			</a>
 		</div>
-		<div class="social-share-icons">
+		<div class="default social-share-icons">
 			<p> &lt;!-- share on social media --&gt;</p>
 			<ul class="share-icons-list">
 				<li class="share-icon">
@@ -72,13 +72,38 @@
 				</li>
 			</ul>
 		</div>
-		<div class="contact-info">
-			contact info
+		<div class="default contact-info">
+			<div class="contact-info-text">
+				<h2 class="contact-title">Contact us</h2>
+				<p>For all enquiries, please email us using the form beside</p>
+				<p>We look forward to hearing from you</p>
+			</div>
+			<form onsubmit="return false" class="contact-form">
+				<div class="row">
+					<label for="fname">First Name</label>
+					<input type="text" id="fname" name="firstname" placeholder="Your name...." required>
+				</div>
+				<div class="row">
+					<label for="lname">Last Name</label>
+					<input type="text" id="lname" name="lastname" placeholder="Your last name...." required>
+				</div>
+				<div class="row">
+					<label for="email">Email</label>
+					<input type="email" id="email" name="email" placeholder="Your email...." required />
+				</div>
+				<div class="row">
+					<label for="subject">Subject</label>
+					<textarea id="subject" name="subject" placeholder="Write something...." required></textarea>
+				</div>
+				<div class="row">
+					<input type="submit" value="Send">
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
-
 <!-- link for font-awesome icons -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 <!-- end FOOTER -->
