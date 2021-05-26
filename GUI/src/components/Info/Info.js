@@ -4,7 +4,10 @@ import styles from './Info.module.scss';
 
 class Info extends Component {
 	state = {
-		pageStatus: true
+		pageStatus: true,
+		timeout: setInterval(()=>{
+			this.togglePageStatus();
+		}, 3500)
 	};
 
 	constructor(props) {
@@ -21,12 +24,6 @@ class Info extends Component {
 	};
 
 	render() {
-
-		var timeout = setTimeout(()=>{
-			this.togglePageStatus();
-			clearTimeout(timeout);
-		}, 3500);
-
 		return(
 			<div className={[styles.info, this.props.propClass, this.state.pageStatus ? styles.up : styles.down].join(' ')}>
 				Get notified if your page is {this.state.pageStatus ? "UP" : "DOWN"}
