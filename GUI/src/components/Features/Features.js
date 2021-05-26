@@ -16,6 +16,10 @@ export default class Features extends Component {
 		super(props);
 	}
 
+	modifyCommonStateInput = (event) => {
+		this.props.modifyCommonStateInput(event.target.value);
+	};
+
 	render () {
 		return (
 			<div className={[styles.features, this.props.propClass].join(' ')}>
@@ -26,6 +30,7 @@ export default class Features extends Component {
 						this.state.funcFeatures.map((feature, index) => <li className={styles.funcFeaturesListItem} key={index}>{feature}</li>)
 					}
 				</ul>
+				<input onInput={this.modifyCommonStateInput}></input>
 			</div>
 		);
 	};
