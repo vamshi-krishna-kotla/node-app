@@ -8,4 +8,5 @@ import '../images/expressjs_logo.png';
 import '../images/node_logo.png';
 import '../images/sass_logo.png';
 import '../images/webpack_logo.png';
+import '../images/react_logo.png';
 import '../images/github.png';
