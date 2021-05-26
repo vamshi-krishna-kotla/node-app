@@ -18,6 +18,10 @@ class App extends Component {
 		super(props);
 	}
 
+	/**
+	 * 
+	 * @param {String} value : string to be passed to set the state
+	 */
 	modifyCommonStateInput = (value) => {
 		this.setState({
 			commonStateInput: value
@@ -38,6 +42,13 @@ class App extends Component {
 				<h1>{this.state.commonStateInput}</h1>
 			</div>
 		);
+		/**
+		 * The state of the App component can be modified by the child components
+		 * 
+		 * We are passing functions to edit the parent state down to the children
+		 * 
+		 * Replacement of this feature is usage of a global state (which is not necessary for this project)
+		 */
 	}
 }
 
