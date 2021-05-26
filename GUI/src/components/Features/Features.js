@@ -16,19 +16,6 @@ export default class Features extends Component {
 		super(props);
 	}
 
-	/**
-	 * 
-	 * @param {Object} event : the event object while typing in the input boxe
-	 * 
-	 * This is method which leverages the parent's method to edit the parent state
-	 * with this way, we can update the stae of the parent from children
-	 * without using a global state
-	 * 
-	 */
-	modifyCommonStateInput = (event) => {
-		this.props.modifyCommonStateInput(event.target.value);
-	};
-
 	render () {
 		return (
 			<div className={[styles.features, this.props.propClass].join(' ')}>
@@ -39,7 +26,6 @@ export default class Features extends Component {
 						this.state.funcFeatures.map((feature, index) => <li className={styles.funcFeaturesListItem} key={index}>{feature}</li>)
 					}
 				</ul>
-				<input onInput={this.modifyCommonStateInput}></input>
 			</div>
 		);
 	};
